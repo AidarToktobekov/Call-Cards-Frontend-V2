@@ -4,6 +4,7 @@ import SignIn from './Containers/SignIn/SignIn.jsx';
 import Notifications from './Components/Notifications/Notifications.jsx';
 import './App.css';
 import Sidebar from './Components/Sidebar/Sidebar.jsx';
+import ContentHeader from './Components/ContentHeader/ContentHeader.jsx';
 
 const App = () => {
   const { user } = useAppSelector(state => state.user);
@@ -23,14 +24,17 @@ const App = () => {
   return (
     <>
       <Notifications />
-      {user && <Sidebar />}
-      <Routes>
-        <Route
-          path='*'
-          element={<Navigate to={user ? '/cards' : '/sign-in'} />}
-        />
-        {user ? privatePages() : publicPages()}
-      </Routes>
+      <div className='content-wrapper'>
+        {user && <Sidebar />}
+        {user && <ContentHeader />}
+        <Routes>
+          <Route
+            path='*'
+            element={<Navigate to={user ? '/cards' : '/sign-in'} />}
+          />
+          {user ? privatePages() : publicPages()}
+        </Routes>
+      </div>
     </>
   );
 };

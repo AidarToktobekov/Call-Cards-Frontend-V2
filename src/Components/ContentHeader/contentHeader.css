@@ -1,0 +1,17 @@
+.content-header {
+  display: flex;
+  padding: 20px 10px 10px;
+}
+
+.content-header button {
+  display: flex;
+  gap: 8px;
+  padding: 6px 8px;
+  margin-left: auto;
+  background-color: #FFFFFF;
+  font-size: 13px;
+  font-weight: bold;
+  text-transform: unset !important;
+  border-radius: 8px !important;
+}
+
