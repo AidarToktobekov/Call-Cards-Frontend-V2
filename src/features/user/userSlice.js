@@ -1,10 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
 import {
-  checkInSeniorSpec,
-  deleteUser,
-  editEmployees,
-  getEmployee,
-  getEmployees,
   login,
   register,
 } from './userThunk';
@@ -56,80 +51,8 @@ const UsersSlice = createSlice({
       state.registerError = error;
       state.registerLoading = false;
     });
-    builder.addCase(getEmployee.pending, (state) => {
-      state.employeeLoading = true;
-    });
-    builder.addCase(getEmployee.fulfilled, (state, { payload: employee }) => {
-      state.employee = employee;
-      state.employeeLoading = false;
-    });
-    builder.addCase(getEmployee.rejected, (state) => {
-      state.employeeLoading = false;
-    });
-    builder.addCase(getEmployees.pending, (state) => {
-      state.employeesLoading = true;
-    });
-    builder.addCase(getEmployees.fulfilled, (state, { payload: employees }) => {
-      state.employees = employees;
-      state.employeesLoading = false;
-    });
-    builder.addCase(getEmployees.rejected, (state) => {
-      state.employeesLoading = false;
-    });
-    builder.addCase(editEmployees.pending, (state) => {
-      state.editEmployeeLoading = true;
-    });
-    builder.addCase(editEmployees.fulfilled, (state, { payload: res }) => {
-      state.editEmployee = res;
-      state.editEmployeeLoading = false;
-    });
-    builder.addCase(editEmployees.rejected, (state) => {
-      state.editEmployeeLoading = false;
-    });
-    builder.addCase(checkInSeniorSpec.pending, (state) => {
-      state.checkedSeniorLoading = true;
-    });
-    builder.addCase(checkInSeniorSpec.fulfilled, (state) => {
-      state.checkedSeniorLoading = false;
-    });
-    builder.addCase(checkInSeniorSpec.rejected, (state) => {
-      state.checkedSeniorLoading = false;
-    });
-    builder.addCase(deleteUser.pending, (state) => {
-      state.deleteLoading = true;
-    });
-    builder.addCase(deleteUser.fulfilled, (state) => {
-      state.deleteLoading = false;
-    });
-    builder.addCase(deleteUser.rejected, (state) => {
-      state.deleteLoading = false;
-    });
-  },
-  selectors: {
-    selectUser: (state) => state.user,
-    selectLoginLoading: (state) => state.loginLoading,
-    selectLoginError: (state) => state.loginError,
-    selectRegisterError: (state) => state.registerError,
-    selectRegisterLoading: (state) => state.registerLoading,
-    selectEmployees: (state) => state.employees,
-    selectEmployeesLoading: (state) => state.employeesLoading,
-    selectEmployee: (state) => state.employee,
-    selectEmployeeLoading: (state) => state.employeeLoading,
-    selectEditEmployee: (state) => state.editEmployee,
-    selectEditEmployeeLoading: (state) => state.editEmployeeLoading,
-    selectEmployeeForEdit: (state) => state.employeeForEdit,
-    selectEmployeeForEditLoading: (state) => state.employeeForEditLoading,
-    selectCheckedSeniorLoading: (state) => state.checkedSeniorLoading,
-    selectDeleteLoading: (state) => state.deleteLoading,
   },
 });
 
 export const userReducer = UsersSlice.reducer;
-export const {
-  selectUser,
-  selectLoginLoading,
-  selectLoginError,
-  selectRegisterError,
-  selectRegisterLoading,
-} = UsersSlice.selectors;
 export const { logout } = UsersSlice.actions;
