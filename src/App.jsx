@@ -3,6 +3,7 @@ import { useAppSelector } from './app/hooks.js';
 import SignIn from './Containers/SignIn/SignIn.jsx';
 import Notifications from './Components/Notifications/Notifications.jsx';
 import './App.css';
+import Sidebar from './Components/Sidebar/Sidebar.jsx';
 
 const App = () => {
   const { user } = useAppSelector(state => state.user);
@@ -21,7 +22,8 @@ const App = () => {
 
   return (
     <>
-      <Notifications/>
+      <Notifications />
+      {user && <Sidebar />}
       <Routes>
         <Route
           path='*'

@@ -1,0 +1,47 @@
+.sidebar {
+  min-width: 300px;
+  max-width: 300px;
+  min-height: 100vh;
+  padding: 16px;
+}
+
+.main-logo {
+  width: 45px;
+  height: 45px;
+  border-radius: 50%;
+}
+
+.sidebar-navigation {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 20px;
+  height: 100%;
+}
+
+.sidebar-navigation button {
+  display: flex;
+  gap: 14px;
+  width: 100%;
+  justify-content: start;
+  text-transform: capitalize;
+  padding: 14px 18px;
+  border-radius: 12px;
+}
+
+.nav-button-active {
+  background-color: var(--nav-btn-active-bg) !important;
+}
+
+.nav-button-active:hover {
+  background-color: var(--nav-btn-active-bg-hover) !important;
+}
+
+.nav-button-inactive {
+  background-color: transparent !important;
+  color: var(--nav-btn-inactive-color) !important;
+}
+
+.nav-button-inactive:hover {
+  background-color: var(--nav-btn-inactive-bg-hover) !important;
+}

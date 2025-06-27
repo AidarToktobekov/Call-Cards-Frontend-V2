@@ -1,3 +1,15 @@
+:root {
+  --nav-btn-active-bg: rgba(25, 118, 210, 0.1);
+  --nav-btn-active-bg-hover: rgba(25, 118, 210, 0.2);
+  --nav-btn-inactive-bg: rgba(213, 213, 213, 0.1);
+  --nav-btn-inactive-bg-hover: rgba(213, 213, 213, 0.2);
+  --nav-btn-inactive-color: rgb(131, 131, 131);
+}
+
+*, ::before, ::after {
+  box-sizing: border-box;
+}
+
 body {
   margin: 0;
   background-color: #121212;
