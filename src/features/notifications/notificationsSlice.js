@@ -5,14 +5,10 @@ const NotificationsSlice = createSlice({
   initialState: [],
   reducers: {
     addSnackbar: (state, action) => {
-      const newAlert = { key: new Date().getTime(), ...action.payload };
-      const existingAlertIndex = state.indexOf(
-        notification => notification.type === newAlert.type
-      );
-
-      if (existingAlertIndex < 0) {
-        state.push(newAlert);
-      } else state[existingAlertIndex] = newAlert;
+      state.push({
+        key: new Date().getTime(),
+        ...action.payload
+      });
     },
     removeSnackbar: (state, action) => {
       return state.filter(notification => notification.key !== action.payload);

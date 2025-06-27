@@ -8,18 +8,19 @@ const Notifications = () => {
   const notifications = useAppSelector(state => state.notifications);
 
   const handleClose = (event, reason, key) => {
-    // if (reason === 'clickaway') return;
+    if (reason === 'clickaway') return;
     dispatch(removeSnackbar(key));
   };
 
   return (
     <>
-      {notifications.map(notification => (
+      {notifications.map((notification, i) => (
         <Snackbar
           key={notification.key}
           open={true}
           autoHideDuration={5000}
           anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
+          sx={{ top: `${(i * 60) + 24}px !important`, transition: '0.2s' }}
           onClose={(event, reason) =>
             handleClose(event, reason, notification.key)
           }

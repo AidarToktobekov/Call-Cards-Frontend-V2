@@ -8,29 +8,31 @@ import {
   persistStore,
   PURGE,
   REGISTER,
-  REHYDRATE,
+  REHYDRATE
 } from 'redux-persist';
 import { userReducer } from '../features/user/userSlice.js';
+import { notificationsReducer } from '../features/notifications/notificationsSlice.js';
 
 const usersPersistConfig = {
   key: 'callCards:user',
   storage,
-  whitelist: ['user'],
+  whitelist: ['user']
 };
 
 const rootReducer = combineReducers({
   user: persistReducer(usersPersistConfig, userReducer),
+  notifications: notificationsReducer
 });
 
 export const store = configureStore({
   reducer: rootReducer,
-  middleware: (getDefaultMiddleware) => {
+  middleware: getDefaultMiddleware => {
     return getDefaultMiddleware({
       serializableCheck: {
-        ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
-      },
+        ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER]
+      }
     });
-  },
+  }
 });
 
 export const persistor = persistStore(store);

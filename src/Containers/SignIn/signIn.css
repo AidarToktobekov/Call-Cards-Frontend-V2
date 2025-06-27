@@ -1,0 +1,23 @@
+.sign-in {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+}
+
+.sign-in-paper {
+  padding: 35px 30px;
+  border-radius: 25px !important;
+  min-width: 400px;
+  margin-bottom: 70px;
+}
+
+.sign-in-paper form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.sign-in-paper form button[type="submit"] {
+  border-radius: 8px;
+}
