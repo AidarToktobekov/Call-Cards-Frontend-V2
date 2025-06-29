@@ -1,7 +1,7 @@
 import React from 'react';
 import { Paper } from '@mui/material';
 import ListHeader from './Components/ListHeader/ListHeader.jsx';
-import List from './Components/List/List.jsx';
+import ItemsList from './Components/ItemsList/ItemsList.jsx';
 import './cards.css';
 import { useFetchCards } from './hooks.js';
 
@@ -26,7 +26,7 @@ const Cards = () => {
           onSearchSubmit={onSearchSubmit}
           handlePageChange={handlePageChange}
         />
-        <List
+        <ItemsList
           cards={cards}
           currentPage={currentPage}
           handlePageChange={handlePageChange}

@@ -3,7 +3,7 @@ import ListTableHeader from '../ListTableHeader/ListTableHeader.jsx';
 import ListTableBody from '../ListTableBody/ListTableBody.jsx';
 import { Divider, Pagination } from '@mui/material';
 
-const List = ({ cards, currentPage, handlePageChange }) => (
+const ItemsList = ({ cards, currentPage, handlePageChange }) => (
   <div className='list-table-wrapper'>
     <table>
       <ListTableHeader />
@@ -20,4 +20,4 @@ const List = ({ cards, currentPage, handlePageChange }) => (
   </div>
 );
 
-export default memo(List);
+export default memo(ItemsList);
