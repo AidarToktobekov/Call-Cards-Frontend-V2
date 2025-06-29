@@ -1,0 +1,88 @@
+.list {
+  padding: 10px;
+}
+
+.list-paper {
+  padding: 12px;
+  border-radius: 14px !important;
+}
+
+.list-search {
+  display: flex;
+  gap: 14px;
+}
+
+.list-search .filters-button,
+.list-search button[type=submit] {
+  display: flex;
+  gap: 8px;
+  padding: 6px 8px;
+  color: #FFFFFF;
+  font-size: 14px;
+  font-weight: bold;
+  text-transform: unset !important;
+  border-radius: 8px !important;
+}
+
+.list-search button[type=submit] {
+  border-color: #FFFFFF !important;
+  background-color: rgba(255, 255, 255, 0) !important;
+  padding: 6px 14px 6px 16px;
+  gap: 2px;
+}
+
+.list-search button[type=submit]:hover {
+  background-color: rgba(255, 255, 255, .1) !important;
+}
+
+.list-search button[type=submit].MuiButton-loading {
+  color: var(--mui-disabled-color) !important;
+  border-color: var(--mui-disabled-color) !important;
+}
+
+.list-search-field {
+  flex-grow: 1;
+}
+
+.list-search-popover .MuiPopover-paper {
+  display: grid;
+  grid-template-areas:
+    "r-s-selection"
+    "employees-selection"
+    "date-picker-selection";
+  grid-template-columns: 1fr;
+  grid-template-rows: auto auto auto;
+  min-width: 700px !important;
+  max-width: 900px;
+  padding: 20px;
+  gap: 8px;
+  border-radius: 16px;
+}
+
+.list-search-popover .MuiStack-root {
+  gap: 14px;
+  align-items: center;
+}
+
+.list-search-popover .MuiPickersTextField-root {
+  margin: 0;
+}
+
+.list-search-popover-r-s {
+  display: flex;
+  gap: 16px;
+  grid-area: r-s-selection;
+}
+
+.list-search-popover-r-s > *,
+.list-search-popover-date-picker .MuiStack-root > * {
+  width: calc(100% - 8px);
+}
+
+.list-search-popover-employees {
+  grid-area: employees-selection;
+}
+
+.list-search-popover-date-picker {
+  grid-area: date-picker-selection;
+}

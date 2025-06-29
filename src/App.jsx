@@ -5,6 +5,7 @@ import Notifications from './Components/Notifications/Notifications.jsx';
 import './App.css';
 import Sidebar from './Components/Sidebar/Sidebar.jsx';
 import ContentHeader from './Components/ContentHeader/ContentHeader.jsx';
+import Cards from './Containers/Cards/Cards.jsx';
 
 const App = () => {
   const { user } = useAppSelector(state => state.user);
@@ -17,7 +18,7 @@ const App = () => {
 
   const privatePages = () => (
     <>
-      <Route path='/cards' element={<></>} />
+      <Route path='/cards' element={<Cards />} />
     </>
   );
 
