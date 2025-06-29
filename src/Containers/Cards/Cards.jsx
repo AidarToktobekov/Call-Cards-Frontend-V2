@@ -1,4 +1,4 @@
-import React, { Suspense, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Autocomplete, Button, Paper, Popover, TextField } from '@mui/material';
 import FilterListIcon from '@mui/icons-material/FilterList';
 import PersonSearchIcon from '@mui/icons-material/PersonSearch';
@@ -32,6 +32,7 @@ const Cards = () => {
     start_date: dayjs().startOf('month'),
     end_date: dayjs().endOf('month')
   });
+  const [currentPage, setCurrentPage] = useState(1);
 
   useEffect(() => {
     void fetchFilterData();
@@ -52,9 +53,15 @@ const Cards = () => {
     setAnchorEl(null);
   };
 
-  const onSearchSubmit = async e => {
+  const handlePageChange = (_, value) => {
+    if (cardsLoading) return;
+    setCurrentPage(value);
+    void fetchCards({ ...filtersState, searchWord, currentPage: value });
+  };
+
+  const onSearchSubmit = e => {
     e.preventDefault();
-    void fetchCards({ ...filtersState, searchWord });
+    void fetchCards({ ...filtersState, searchWord, currentPage });
   };
 
   const ListHeader = () => (
@@ -176,14 +183,19 @@ const Cards = () => {
   );
 
   const List = () => (
-    <Suspense>
-      <div className='list-table-wrapper'>
-        <table>
-          {<ListTableHeader />}
-          {<ListTableBody cards={cards?.result} />}
-        </table>
-      </div>
-    </Suspense>
+    <div className='list-table-wrapper'>
+      <table>
+        {<ListTableHeader />}
+        {
+          <ListTableBody
+            cards={cards?.result}
+            currentaPage={currentPage}
+            pagesCount={cards?.total_pages}
+            handlePageChange={handlePageChange}
+          />
+        }
+      </table>
+    </div>
   );
 
   return (

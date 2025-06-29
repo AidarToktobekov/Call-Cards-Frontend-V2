@@ -64,10 +64,10 @@ export const useFetchCards = () => {
             solution => solution?.id
           ),
           sip: (filtersState?.users || []).map(user => user?.sip),
-          ls_abon: filtersState?.searchWord || ''
+          ls_abon: filtersState?.searchWord || '',
+          page: filtersState?.currentPage || 1,
+          page_size: 100
         };
-
-        console.log(params);
 
         setCardsLoading(true);
         const response = await axiosApi('/cards', { params });

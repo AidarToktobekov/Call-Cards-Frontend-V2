@@ -1,12 +1,17 @@
 import React from 'react';
-import { Chip, Divider } from '@mui/material';
+import { Chip, Divider, Pagination } from '@mui/material';
 import { copyToClipboard } from '../../../../utils.js';
 
-const ListTableBody = ({ cards = [] }) => {
+const ListTableBody = ({
+  cards = [],
+  currentaPage,
+  pagesCount,
+  handlePageChange
+}) => {
   return (
     <tbody>
       {cards.map(card => (
-        <>
+        <React.Fragment key={card.id}>
           <tr key={card.id}>
             <td style={{ textAlign: 'center' }}>{card.id}</td>
             <td style={{ maxWidth: '240px' }}>{card.full_name}</td>
@@ -40,8 +45,18 @@ const ListTableBody = ({ cards = [] }) => {
               <Divider />
             </td>
           </tr>
-        </>
+        </React.Fragment>
       ))}
+      <tr className='list-pagination'>
+        <td colSpan={10} style={{ paddingTop: 0 }}>
+          <Divider style={{ marginBottom: '10px' }} />
+          <Pagination
+            count={pagesCount}
+            page={currentaPage}
+            onChange={handlePageChange}
+          />
+        </td>
+      </tr>
     </tbody>
   );
 };

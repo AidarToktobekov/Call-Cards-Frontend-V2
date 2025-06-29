@@ -1,6 +1,4 @@
 .list {
-  position: sticky;
-  top: 0;
   padding: 10px;
 }
 
@@ -90,8 +88,9 @@
 }
 
 .list-table-wrapper {
-  max-height: calc(100vh - 156px);
+  max-height: calc(100vh - 170px); /* avoid window scroll, by fitting wrapper inside it */
   overflow: auto;
+  margin-top: 10px;
 }
 
 .list table {
@@ -102,15 +101,15 @@
 .list table thead {
   position: sticky;
   top: 0;
-  background-color: #1e1e1e;
+  background-color: var(--mui-paper-no-elevation-bg);
   z-index: 999;
 }
 
 .list table th {
   text-align: left;
+  padding: 10px 16px;
 }
 
-.list table th,
 .list table td {
   padding: 10px 14px;
 }
@@ -118,4 +117,15 @@
 .list table td {
   vertical-align: top;
 }
+
+.list-pagination {
+  position: sticky;
+  bottom: 0;
+  background-color: var(--mui-paper-no-elevation-bg);
+}
+
+.list-pagination ul {
+  justify-content: center;
+}
+
 
