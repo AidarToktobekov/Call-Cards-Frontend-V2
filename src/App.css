@@ -19,6 +19,7 @@ body {
 }
 
 .content-wrapper:not(:has(.sign-in)) {
+  position: relative;
   display: grid;
   min-height: 100vh;
   grid-template-areas:

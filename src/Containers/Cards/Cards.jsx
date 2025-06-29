@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { Suspense, useEffect, useState } from 'react';
 import { Autocomplete, Button, Paper, Popover, TextField } from '@mui/material';
 import FilterListIcon from '@mui/icons-material/FilterList';
 import PersonSearchIcon from '@mui/icons-material/PersonSearch';
@@ -8,6 +8,8 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { useFetchCards, useFetchFilterData } from './hooks.js';
 import dayjs from 'dayjs';
+import ListTableBody from './Components/ListBody/ListTableBody.jsx';
+import ListTableHeader from './Components/ListHeader/ListHeader.jsx';
 import './cards.css';
 
 const filtersButtonId = 'filtersButton';
@@ -55,7 +57,38 @@ const Cards = () => {
     void fetchCards({ ...filtersState, searchWord });
   };
 
-  const PopoverContent = (
+  const ListHeader = () => (
+    <div className='list-header'>
+      <form className='list-search' onSubmit={onSearchSubmit}>
+        <Button className='filters-button' onClick={handleClick}>
+          <FilterListIcon />
+          Фильтры
+        </Button>
+        {PopoverContent()}
+        <TextField
+          className='list-search-field'
+          id='outlined-search'
+          size='small'
+          label='Поиск по ЛС...'
+          type='search'
+          value={searchWord}
+          onChange={handleSearchWordChange}
+        />
+        <Button
+          id={filtersButtonId}
+          variant='outlined'
+          type='submit'
+          loadingPosition='start'
+          loading={cardsLoading}
+          startIcon={<PersonSearchIcon />}
+        >
+          Поиск
+        </Button>
+      </form>
+    </div>
+  );
+
+  const PopoverContent = () => (
     <Popover
       id={filtersButtonId}
       className='list-search-popover'
@@ -71,6 +104,7 @@ const Cards = () => {
           options={reasons}
           loading={reasonsLoading}
           getOptionLabel={option => option.title}
+          getOptionKey={option => option.id}
           renderInput={params => (
             <TextField
               {...params}
@@ -87,6 +121,7 @@ const Cards = () => {
           options={solutions}
           loading={solutionsLoading}
           getOptionLabel={option => option.title}
+          getOptionKey={option => option.id}
           renderInput={params => (
             <TextField
               {...params}
@@ -105,6 +140,7 @@ const Cards = () => {
           options={users}
           loading={employeesLoading}
           getOptionLabel={option => `${option.full_name} (${option.sip})`}
+          getOptionKey={option => option.id}
           renderInput={params => (
             <TextField
               {...params}
@@ -139,37 +175,22 @@ const Cards = () => {
     </Popover>
   );
 
+  const List = () => (
+    <Suspense>
+      <div className='list-table-wrapper'>
+        <table>
+          {<ListTableHeader />}
+          {<ListTableBody cards={cards?.result} />}
+        </table>
+      </div>
+    </Suspense>
+  );
+
   return (
     <div className='list'>
-      <Paper className='list-paper' elevation='1'>
-        <div className='list-header'>
-          <form className='list-search' onSubmit={onSearchSubmit}>
-            <Button className='filters-button' onClick={handleClick}>
-              <FilterListIcon />
-              Фильтры
-            </Button>
-            {PopoverContent}
-            <TextField
-              className='list-search-field'
-              id='outlined-search'
-              size='small'
-              label='Поиск по ЛС...'
-              type='search'
-              value={searchWord}
-              onChange={handleSearchWordChange}
-            />
-            <Button
-              id={filtersButtonId}
-              variant='outlined'
-              type='submit'
-              loadingPosition='start'
-              loading={cardsLoading}
-              startIcon={<PersonSearchIcon />}
-            >
-              Поиск
-            </Button>
-          </form>
-        </div>
+      <Paper className='list-paper'>
+        {ListHeader()}
+        {List()}
       </Paper>
     </div>
   );

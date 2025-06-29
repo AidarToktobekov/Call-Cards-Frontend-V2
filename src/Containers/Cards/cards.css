@@ -1,4 +1,6 @@
 .list {
+  position: sticky;
+  top: 0;
   padding: 10px;
 }
 
@@ -86,3 +88,34 @@
 .list-search-popover-date-picker {
   grid-area: date-picker-selection;
 }
+
+.list-table-wrapper {
+  max-height: calc(100vh - 156px);
+  overflow: auto;
+}
+
+.list table {
+  font-family: Roboto, Helvetica, Arial, sans-serif;
+  border-spacing: 0;
+}
+
+.list table thead {
+  position: sticky;
+  top: 0;
+  background-color: #1e1e1e;
+  z-index: 999;
+}
+
+.list table th {
+  text-align: left;
+}
+
+.list table th,
+.list table td {
+  padding: 10px 14px;
+}
+
+.list table td {
+  vertical-align: top;
+}
+
