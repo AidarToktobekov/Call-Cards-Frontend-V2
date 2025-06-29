@@ -3,7 +3,7 @@
   padding: 20px 10px 10px;
 }
 
-.content-header button {
+.content-header .create-cards-btn {
   display: flex;
   gap: 8px;
   padding: 6px 8px;

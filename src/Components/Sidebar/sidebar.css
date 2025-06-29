@@ -9,6 +9,7 @@
 
 .sidebar .user-name {
   font-size: 15px;
+  margin: 4px 0 8px;
 }
 
 .duty-button-group {
@@ -28,12 +29,24 @@
   height: auto;
 }
 
-.sidebar-navigation button {
+.sidebar-button-group-list {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.sidebar-button-group-title {
+  margin-bottom: 6px!important;
+  opacity: .9;
+}
+
+.sidebar-navigation .sidebar-nav-btn,
+.duty-button-group button {
   display: flex;
   gap: 14px;
   width: 100%;
   justify-content: start;
-  text-transform: capitalize;
+  text-transform: unset;
   padding: 14px 18px;
   border-radius: 12px;
 }

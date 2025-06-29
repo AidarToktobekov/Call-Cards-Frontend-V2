@@ -38,78 +38,96 @@ const Sidebar = () => {
         >
           {dutyButtons}
         </ButtonGroup>
-        <Button
-          className={`${pathname === '/cards' ? 'nav-button-active' : 'nav-button-inactive'}`}
-          variant='text'
-          size='large'
-          onClick={() => navigate('/cards')}
-        >
-          <ContactPhoneIcon />
-          Звонки
-        </Button>
-        <Button
-          className={`${pathname === '/stats_by_employees' ? 'nav-button-active' : 'nav-button-inactive'}`}
-          variant='text'
-          size='large'
-          onClick={() => navigate('/stats_by_employees')}
-        >
-          <GroupIcon />
-          Звонки по сотрудникам
-        </Button>
-        <Button
-          className={`${pathname === '/stats_by_reasons' ? 'nav-button-active' : 'nav-button-inactive'}`}
-          variant='text'
-          size='large'
-          onClick={() => navigate('/stats_by_reasons')}
-        >
-          <HelpIcon />
-          Звонки по причинам
-        </Button>
-        <Button
-          className={`${pathname === '/stats_by_solutions' ? 'nav-button-active' : 'nav-button-inactive'}`}
-          variant='text'
-          size='large'
-          onClick={() => navigate('/stats_by_solutions')}
-        >
-          <EmojiObjectsIcon />
-          Звонки по решениям
-        </Button>
-        <Button
-          className={`${pathname === '/stats_by_repeated_calls' ? 'nav-button-active' : 'nav-button-inactive'}`}
-          variant='text'
-          size='large'
-          onClick={() => navigate('/stats_by_repeated_calls')}
-        >
-          <RepeatIcon />
-          Повторные звонки
-        </Button>
-        <Button
-          className={`${pathname === '/stats_by_inactives_users' ? 'nav-button-active' : 'nav-button-inactive'}`}
-          variant='text'
-          size='large'
-          onClick={() => navigate('/stats_by_inactives_users')}
-        >
-          <VoiceOverOffIcon />
-          Неактивные звонки
-        </Button>
+        <div className='sidebar-button-group'>
+          <Typography className='sidebar-button-group-title'>Отчёты</Typography>
+          <div className='sidebar-button-group-list'>
+            <Button
+              className={`sidebar-nav-btn ${pathname === '/cards' ? 'nav-button-active' : 'nav-button-inactive'}`}
+              variant='text'
+              size='large'
+              href='/cards'
+            >
+              <ContactPhoneIcon />
+              Звонки
+            </Button>
+            <Button
+              className={`sidebar-nav-btn ${pathname === '/stats_by_employees' ? 'nav-button-active' : 'nav-button-inactive'}`}
+              variant='text'
+              size='large'
+              href='/stats_by_employees'
+            >
+              <GroupIcon />
+              Звонки по сотрудникам
+            </Button>
+            <Button
+              className={`sidebar-nav-btn ${pathname === '/stats_by_reasons' ? 'nav-button-active' : 'nav-button-inactive'}`}
+              variant='text'
+              size='large'
+              href='/stats_by_reasons'
+            >
+              <HelpIcon />
+              Звонки по причинам
+            </Button>
+            <Button
+              className={`sidebar-nav-btn ${pathname === '/stats_by_solutions' ? 'nav-button-active' : 'nav-button-inactive'}`}
+              variant='text'
+              size='large'
+              href='/stats_by_solutions'
+            >
+              <EmojiObjectsIcon />
+              Звонки по решениям
+            </Button>
+            <Button
+              className={`sidebar-nav-btn ${pathname === '/stats_by_repeated_calls' ? 'nav-button-active' : 'nav-button-inactive'}`}
+              variant='text'
+              size='large'
+              href='/stats_by_repeated_calls'
+            >
+              <RepeatIcon />
+              Повторные звонки
+            </Button>
+            <Button
+              className={`sidebar-nav-btn ${pathname === '/stats_by_inactives_users' ? 'nav-button-active' : 'nav-button-inactive'}`}
+              variant='text'
+              size='large'
+              onClick={() => navigate('/stats_by_inactives_users')}
+            >
+              <VoiceOverOffIcon />
+              Неактивные звонки
+            </Button>
+          </div>
+        </div>
         <Divider />
+        <div className='sidebar-button-group'>
+          <Typography className='sidebar-button-group-title'>
+            Управление
+          </Typography>
+          <div className='sidebar-button-group-list'>
+            <Button
+              className={`sidebar-nav-btn ${pathname === '/solution-and-reason' ? 'nav-button-active' : 'nav-button-inactive'}`}
+              variant='text'
+              size='large'
+              href='/solution-and-reason'
+            >
+              Причины / Решения
+            </Button>
+            <Button
+              className={`sidebar-nav-btn ${pathname === '/employees' ? 'nav-button-active' : 'nav-button-inactive'}`}
+              variant='text'
+              size='large'
+              href='/employees'
+            >
+              Сотрудники
+            </Button>
+          </div>
+        </div>
         <Button
-          className={`${pathname === '/solution-and-reason' ? 'nav-button-active' : 'nav-button-inactive'}`}
+          className='sidebar-nav-btn'
           variant='text'
+          color='error'
           size='large'
-          onClick={() => navigate('/solution-and-reason')}
+          sx={{ mt: 'auto' }}
         >
-          Причины / Решения
-        </Button>
-        <Button
-          className={`${pathname === '/employees' ? 'nav-button-active' : 'nav-button-inactive'}`}
-          variant='text'
-          size='large'
-          onClick={() => navigate('/employees')}
-        >
-          Сотрудники
-        </Button>
-        <Button variant='text' color='error' size='large' sx={{ mt: 'auto' }}>
           <LogoutIcon />
           Выйти из системы
         </Button>

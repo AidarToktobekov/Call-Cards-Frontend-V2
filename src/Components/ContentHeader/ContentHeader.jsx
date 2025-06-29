@@ -13,7 +13,7 @@ const ContentHeader = () => {
       <Typography variant='h4' component='h4'>
         {PAGE_NAMES[pathname]}
       </Typography>
-      <Button variant='contained'>
+      <Button className='create-cards-btn' variant='contained' href='/cards'>
         <AddIcon />
         Создать карточку
       </Button>

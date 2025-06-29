@@ -13,7 +13,7 @@ export const PAGE_NAMES = {
   '/stats_by_repeated_calls': 'Повторные звонки',
   '/stats_by_inactives_users': 'Неактивные абоненты',
   '/employees': 'Сотрудники',
-  '/edit-employees/:id': 'Редактирование сотрудника',
+  '/edit-employees/:id': 'Редактирование сотрудника'
 };
 
 export function getPageTitle(pathname) {
