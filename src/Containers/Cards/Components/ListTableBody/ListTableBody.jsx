@@ -9,6 +9,7 @@ const ListTableBody = ({ cards }) => (
         <tr key={card.id}>
           <td style={{ textAlign: 'center' }}>{card.id}</td>
           <td style={{ maxWidth: '240px' }}>{card.full_name}</td>
+          <td style={{ textAlign: 'center' }}>{card.call_from}</td>
           <td style={{ textAlign: 'center' }}>{card.ls_abon}</td>
           <td style={{ maxWidth: '320px', textAlign: 'center' }}>
             <div
@@ -35,7 +36,7 @@ const ListTableBody = ({ cards }) => (
           <td>{card.comment}</td>
         </tr>
         <tr>
-          <td colSpan={10} style={{ padding: 0 }}>
+          <td colSpan={11} style={{ padding: 0 }}>
             <Divider />
           </td>
         </tr>

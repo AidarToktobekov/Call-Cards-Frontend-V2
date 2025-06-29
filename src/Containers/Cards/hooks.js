@@ -78,7 +78,7 @@ export const useFetchCards = () => {
     void fetchCards({ ...filtersState, searchWord });
   };
 
-  const fetchCards = async filtersState => {
+  const fetchCards = useCallback(async filtersState => {
     try {
       const params = {
         start_date: filtersState?.start_date?.format('YYYY-MM-DD'),
@@ -99,7 +99,7 @@ export const useFetchCards = () => {
     } finally {
       setCardsLoading(false);
     }
-  };
+  }, [dispatch]);
 
   return {
     cards,

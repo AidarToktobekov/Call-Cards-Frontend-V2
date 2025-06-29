@@ -9,8 +9,8 @@ const List = ({ cards, currentPage, handlePageChange }) => (
       <ListTableHeader />
       <ListTableBody cards={cards} />
     </table>
-    <div style={{}}>
-      <Divider style={{ margin: 'auto 0 10px' }} />
+    <div className='list-pagination-wrapper'>
+      <Divider style={{ marginBottom: '10px' }} />
       <Pagination
         count={cards?.total_pages || 1}
         page={currentPage}
