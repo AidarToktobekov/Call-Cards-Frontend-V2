@@ -1,32 +1,69 @@
-import React from 'react';
-import { Divider } from '@mui/material';
+import React, { memo, useState } from 'react';
+import { Button, TextField } from '@mui/material';
+import FilterListIcon from '@mui/icons-material/FilterList';
+import PersonSearchIcon from '@mui/icons-material/PersonSearch';
+import FiltersPopoverContent from '../FiltersPopoverContent/FiltersPopoverContent.jsx';
 
-const ListTableHeader = () => {
+const filtersButtonId = 'filtersButton';
+
+const ListHeader = ({
+  searchWord,
+  cardsLoading,
+  handleSearchWordChange,
+  handlePageChange
+}) => {
+  const [anchorEl, setAnchorEl] = useState(null);
+  const open = Boolean(anchorEl);
+
+  const handleFiltersClick = event => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleFiltersClose = () => {
+    setAnchorEl(null);
+  };
+
   return (
-    <thead>
-      <tr>
-        <th style={{ minWidth: '30px', textAlign: 'center' }}>ID</th>
-        <th>ФИО</th>
-        <th style={{ minWidth: '140px', textAlign: 'center' }}>ЛС абонента</th>
-        <th style={{ textAlign: 'center', minWidth: '260px' }}>
-          Номер телефона
-        </th>
-        <th style={{ minWidth: '190px', textAlign: 'center' }}>
-          Дата создания
-        </th>
-        <th>Причина</th>
-        <th>Решение</th>
-        <th>СИП</th>
-        <th>Старший смены</th>
-        <th>Комментарий</th>
-      </tr>
-      <tr>
-        <td colSpan={10} style={{ padding: 0 }}>
-          <Divider />
-        </td>
-      </tr>
-    </thead>
+    <div className='list-header'>
+      <form
+        className='list-search'
+        onSubmit={e => {
+          e.preventDefault();
+          handlePageChange();
+        }}
+      >
+        <Button className='filters-button' onClick={handleFiltersClick}>
+          <FilterListIcon />
+          Фильтры
+        </Button>
+        <FiltersPopoverContent
+          open={open}
+          filtersButtonId={filtersButtonId}
+          anchorEl={anchorEl}
+          handleFiltersClose={handleFiltersClose}
+        />
+        <TextField
+          className='list-search-field'
+          id='outlined-search'
+          size='small'
+          label='Поиск по ЛС...'
+          type='search'
+          value={searchWord}
+          onChange={handleSearchWordChange}
+        />
+        <Button
+          id={filtersButtonId}
+          variant='outlined'
+          type='submit'
+          loadingPosition='start'
+          loading={cardsLoading}
+          startIcon={<PersonSearchIcon />}
+        >
+          Поиск
+        </Button>
+      </form>
+    </div>
   );
 };
 
-export default ListTableHeader;
+export default memo(ListHeader);

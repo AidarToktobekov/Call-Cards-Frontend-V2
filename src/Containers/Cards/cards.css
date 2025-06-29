@@ -3,7 +3,7 @@
 }
 
 .list-paper {
-  padding: 12px;
+  padding: 18px 12px 12px;
   border-radius: 14px !important;
 }
 
@@ -42,6 +42,10 @@
 
 .list-search-field {
   flex-grow: 1;
+}
+
+.list-search-field .MuiInputBase-root {
+  border-radius: 8px !important;
 }
 
 .list-search-popover .MuiPopover-paper {
@@ -88,7 +92,10 @@
 }
 
 .list-table-wrapper {
-  max-height: calc(100vh - 170px); /* avoid window scroll, by fitting wrapper inside it */
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: calc(100vh - 172px); /* avoid window scroll, by fitting wrapper inside it */
   overflow: auto;
   margin-top: 10px;
 }
@@ -96,6 +103,7 @@
 .list table {
   font-family: Roboto, Helvetica, Arial, sans-serif;
   border-spacing: 0;
+  width: 100%;
 }
 
 .list table thead {
@@ -107,7 +115,7 @@
 
 .list table th {
   text-align: left;
-  padding: 10px 16px;
+  padding: 18px 16px;
 }
 
 .list table td {
@@ -118,13 +126,7 @@
   vertical-align: top;
 }
 
-.list-pagination {
-  position: sticky;
-  bottom: 0;
-  background-color: var(--mui-paper-no-elevation-bg);
-}
-
-.list-pagination ul {
+.list-table-wrapper ul {
   justify-content: center;
 }
 

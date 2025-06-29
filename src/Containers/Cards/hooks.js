@@ -2,24 +2,25 @@ import { useCallback, useState } from 'react';
 import axiosApi from '../../axiosApi.js';
 import { useAppDispatch } from '../../app/hooks.js';
 import { addSnackbar } from '../../features/notifications/notificationsSlice.js';
+import dayjs from 'dayjs';
 
 export const useFetchFilterData = () => {
+  const dispatch = useAppDispatch();
   const [reasons, setReasons] = useState([]);
   const [solutions, setSolutions] = useState([]);
   const [users, setUsers] = useState([]);
   const [reasonsLoading, setReasonsLoading] = useState(false);
   const [solutionsLoading, setSolutionsLoading] = useState(false);
-  const [employeesLoading, setEmployeesLoading] = useState(false);
-  const dispatch = useAppDispatch();
+  const [usersLoading, setUsersLoading] = useState(false);
 
   const fetchFilterData = useCallback(async () => {
     try {
       setReasonsLoading(true);
       setSolutionsLoading(true);
-      setEmployeesLoading(true);
+      setUsersLoading(true);
 
       const reasonsResponse = await axiosApi('/actions_tree/reasons');
-      setEmployeesLoading(false);
+      setReasonsLoading(false);
       setReasons(reasonsResponse.data);
 
       const solutionsResponse = await axiosApi('/actions_tree/solutions');
@@ -27,13 +28,13 @@ export const useFetchFilterData = () => {
       setSolutions(solutionsResponse.data);
 
       const employeesResponse = await axiosApi('/users');
-      setEmployeesLoading(false);
+      setUsersLoading(false);
       setUsers(employeesResponse.data);
     } catch (e) {
       dispatch(addSnackbar({ type: 'error', message: e.error || e.message }));
-      setEmployeesLoading(false);
+      setReasonsLoading(false);
       setSolutionsLoading(false);
-      setEmployeesLoading(false);
+      setUsersLoading(false);
     }
   }, [dispatch]);
 
@@ -43,43 +44,73 @@ export const useFetchFilterData = () => {
     users,
     reasonsLoading,
     solutionsLoading,
-    employeesLoading,
+    usersLoading,
     fetchFilterData
   };
 };
 
 export const useFetchCards = () => {
-  const [cards, setCards] = useState([]);
-  const [cardsLoading, setCardsLoading] = useState(false);
   const dispatch = useAppDispatch();
+  const [cards, setCards] = useState(null);
+  const [cardsLoading, setCardsLoading] = useState(false);
+  const [filtersState, setFiltersState] = useState({
+    start_date: dayjs().startOf('month'),
+    end_date: dayjs().endOf('month')
+  });
+  const [currentPage, setCurrentPage] = useState(1);
+  const [searchWord, setSearchWord] = useState('');
 
-  const fetchCards = useCallback(
-    async filtersState => {
-      try {
-        const params = {
-          start_date: filtersState?.start_date?.format('YYYY-MM-DD'),
-          end_date: filtersState?.end_date?.format('YYYY-MM-DD'),
-          reason: (filtersState?.reasons || []).map(reason => reason?.id),
-          solution: (filtersState?.solutions || []).map(
-            solution => solution?.id
-          ),
-          sip: (filtersState?.users || []).map(user => user?.sip),
-          ls_abon: filtersState?.searchWord || '',
-          page: filtersState?.currentPage || 1,
-          page_size: 100
-        };
+  const handleFilterChange = (name, value) =>
+    setFiltersState(prevState => ({ ...prevState, [name]: value }));
 
-        setCardsLoading(true);
-        const response = await axiosApi('/cards', { params });
-        setCards(response.data);
-      } catch (e) {
-        dispatch(addSnackbar({ type: 'error', message: e.error || e.message }));
-      } finally {
-        setCardsLoading(false);
-      }
-    },
-    [dispatch]
-  );
+  const handleSearchWordChange = e => {
+    setSearchWord(e.target.value);
+  };
 
-  return { cards, cardsLoading, fetchCards };
+  const handlePageChange = (_, value = 1) => {
+    if (cardsLoading) return;
+    setCurrentPage(value);
+    void fetchCards({ ...filtersState, searchWord, currentPage: value });
+  };
+
+  const onSearchSubmit = () => {
+    if (cardsLoading) return;
+    void fetchCards({ ...filtersState, searchWord });
+  };
+
+  const fetchCards = async filtersState => {
+    try {
+      const params = {
+        start_date: filtersState?.start_date?.format('YYYY-MM-DD'),
+        end_date: filtersState?.end_date?.format('YYYY-MM-DD'),
+        reason: (filtersState?.reasons || []).map(reason => reason?.id),
+        solution: (filtersState?.solutions || []).map(solution => solution?.id),
+        sip: (filtersState?.users || []).map(user => user?.sip),
+        ls_abon: filtersState?.searchWord || '',
+        page: filtersState?.currentPage || 1,
+        page_size: 100
+      };
+
+      setCardsLoading(true);
+      const response = await axiosApi('/cards', { params });
+      setCards(response.data);
+    } catch (e) {
+      dispatch(addSnackbar({ type: 'error', message: e.error || e.message }));
+    } finally {
+      setCardsLoading(false);
+    }
+  };
+
+  return {
+    cards,
+    searchWord,
+    cardsLoading,
+    fetchCards,
+    currentPage,
+    filtersState,
+    handleSearchWordChange,
+    handleFilterChange,
+    handlePageChange,
+    onSearchSubmit
+  };
 };
