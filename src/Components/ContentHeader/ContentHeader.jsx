@@ -48,7 +48,7 @@ const ContentHeader = () => {
         <Typography variant='h4' component='h4'>
           {PAGE_NAMES[pathname]}
         </Typography>
-        <Button variant='contained' onClick={handleClick}>
+        <Button variant='contained' className='create-cards-btn' onClick={handleClick}>
           <AddIcon />
           Создать карточку
         </Button>
