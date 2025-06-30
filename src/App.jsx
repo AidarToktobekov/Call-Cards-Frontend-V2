@@ -2,10 +2,11 @@ import { Navigate, Route, Routes } from 'react-router-dom';
 import { useAppSelector } from './app/hooks.js';
 import SignIn from './Containers/SignIn/SignIn.jsx';
 import Notifications from './Components/Notifications/Notifications.jsx';
-import './App.css';
 import Sidebar from './Components/Sidebar/Sidebar.jsx';
 import ContentHeader from './Components/ContentHeader/ContentHeader.jsx';
 import Cards from './Containers/Cards/Cards.jsx';
+import CardsReportByEmployees from './Containers/CardsReportByEmployees/CardsReportByEmployees.jsx';
+import './App.css';
 
 const App = () => {
   const { user } = useAppSelector(state => state.user);
@@ -19,6 +20,7 @@ const App = () => {
   const privatePages = () => (
     <>
       <Route path='/cards' element={<Cards />} />
+      <Route path='/stats_by_employees' element={<CardsReportByEmployees />} />
     </>
   );
 

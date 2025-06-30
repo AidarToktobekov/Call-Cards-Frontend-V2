@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { Paper } from '@mui/material';
 import ListHeader from './Components/ListHeader/ListHeader.jsx';
 import ItemsList from './Components/ItemsList/ItemsList.jsx';

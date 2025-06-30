@@ -6,7 +6,7 @@ const ListTableBody = ({ cards }) => (
   <tbody>
     {(cards?.result || []).map(card => (
       <React.Fragment key={card.id}>
-        <tr key={card.id}>
+        <tr>
           <td style={{ textAlign: 'center' }}>{card.id}</td>
           <td style={{ maxWidth: '240px' }}>{card.full_name}</td>
           <td style={{ textAlign: 'center' }}>
