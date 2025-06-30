@@ -75,6 +75,7 @@ export const useFetchCards = () => {
 
   const onSearchSubmit = () => {
     if (cardsLoading) return;
+    setCurrentPage(1);
     void fetchCards({ ...filtersState, searchWord });
   };
 
@@ -105,7 +106,6 @@ export const useFetchCards = () => {
     cards,
     searchWord,
     cardsLoading,
-    fetchCards,
     currentPage,
     filtersState,
     handleSearchWordChange,

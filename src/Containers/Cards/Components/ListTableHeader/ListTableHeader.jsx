@@ -7,7 +7,7 @@ const ListTableHeader = () => {
       <tr>
         <th style={{ minWidth: '30px', textAlign: 'center' }}>ID</th>
         <th>ФИО</th>
-        <th>Звонок от</th>
+        <th style={{ minWidth: '120px' }}>Звонок от</th>
         <th style={{ minWidth: '140px', textAlign: 'center' }}>ЛС абонента</th>
         <th style={{ textAlign: 'center', minWidth: '260px' }}>
           Номер телефона

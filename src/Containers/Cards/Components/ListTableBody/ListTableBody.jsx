@@ -9,7 +9,16 @@ const ListTableBody = ({ cards }) => (
         <tr key={card.id}>
           <td style={{ textAlign: 'center' }}>{card.id}</td>
           <td style={{ maxWidth: '240px' }}>{card.full_name}</td>
-          <td style={{ textAlign: 'center' }}>{card.call_from}</td>
+          <td style={{ textAlign: 'center' }}>
+            {card.call_from ? (
+              <Chip
+                label={card.call_from}
+                onClick={() => copyToClipboard(card.call_from)}
+              />
+            ) : (
+              ''
+            )}
+          </td>
           <td style={{ textAlign: 'center' }}>{card.ls_abon}</td>
           <td style={{ maxWidth: '320px', textAlign: 'center' }}>
             <div

@@ -10,7 +10,7 @@ const ListHeader = ({
   searchWord,
   cardsLoading,
   handleSearchWordChange,
-  handlePageChange
+  onSearchSubmit
 }) => {
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
@@ -29,7 +29,7 @@ const ListHeader = ({
         className='list-search'
         onSubmit={e => {
           e.preventDefault();
-          handlePageChange();
+          onSearchSubmit();
         }}
       >
         <Button className='filters-button' onClick={handleFiltersClick}>

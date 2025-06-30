@@ -1,9 +1,9 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Paper } from '@mui/material';
 import ListHeader from './Components/ListHeader/ListHeader.jsx';
 import ItemsList from './Components/ItemsList/ItemsList.jsx';
-import './cards.css';
 import { useFetchCards } from './hooks.js';
+import './cards.css';
 
 const Cards = () => {
   const {
@@ -24,7 +24,6 @@ const Cards = () => {
           cardsLoading={cardsLoading}
           handleSearchWordChange={handleSearchWordChange}
           onSearchSubmit={onSearchSubmit}
-          handlePageChange={handlePageChange}
         />
         <ItemsList
           cards={cards}
