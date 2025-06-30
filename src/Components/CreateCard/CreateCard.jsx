@@ -9,7 +9,7 @@ import {
   Typography,
   Grid
 } from '@mui/material';
-import {useEffect, useState} from 'react';
+import {memo, useEffect, useState} from 'react';
 import {useAppSelector} from '../../app/hooks.js';
 import {useFetchReasons} from "../../hooks/reasonsHook.js";
 import {useFetchSolutions} from "../../hooks/solutionsHook.js";
@@ -33,12 +33,6 @@ const CreateCard = ({client}) => {
 
   const inputChangeHandler = (e) => {
     const { name, value } = e.target;
-    if (
-        ['ls_abon', 'full_name', 'address'].includes(name) &&
-        modalClient?.reason?.title !== 'Интерком' &&
-        modalClient?.reason?.title !== 'Желает подключиться'
-    )
-      return;
 
     setModalClient((prevState) => ({
       ...prevState,
@@ -57,17 +51,9 @@ const CreateCard = ({client}) => {
 
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        await fetchReasons();
-        await fetchSolutions();
-      } catch (error) {
-        console.error('Ошибка при загрузке данных:', error);
-      }
-    };
-
-    fetchData();
-  }, []);
+      void fetchReasons();
+      void fetchSolutions();
+  }, [fetchReasons, fetchSolutions]);
 
   useEffect(() => {
     setModalClient(client)
@@ -153,25 +139,46 @@ const CreateCard = ({client}) => {
           gridTemplateColumns: "calc(50% - 5px) calc(50% - 5px)",
           gap: '10px',
         }}>
-          {modalClient?.full_name && (
+          {client?.full_name ? (
             <TextField variant={"filled"} value={modalClient?.full_name} label={"ФИО"} fullWidth sx={{
               gridColumnStart: "1",
               gridColumnEnd: "3",
             }} inputProps={{
               style: {textAlign: 'center'}
             }}/>
+          ) : (
+              <TextField variant={"filled"} value={modalClient?.full_name || ""} label={"ФИО"} name={"full_name"} onChange={inputChangeHandler} fullWidth sx={{
+                gridColumnStart: "1",
+                gridColumnEnd: "3",
+              }} inputProps={{
+                style: {textAlign: 'center'}
+              }}/>
           )}
-          {modalClient?.ls_abon && (
+          {client?.ls_abon ? (
             <TextField variant={"filled"} value={modalClient?.ls_abon} label={"Лицевой счет"} fullWidth inputProps={{
               style: {textAlign: 'center'}
             }}/>
+          ):(
+              <TextField variant={"filled"} value={modalClient?.ls_abon || ""} label={"Лицевой счет"} sx={{
+                gridColumnStart: "1",
+                gridColumnEnd: "3",
+              }} name={"ls_abon"} onChange={inputChangeHandler} fullWidth inputProps={{
+                style: {textAlign: 'center'}
+              }}/>
           )}
-           {modalClient?.address && (
+           {client?.address ? (
             <TextField variant={"filled"} value={modalClient?.address} label={"Адрес"} fullWidth inputProps={{
              style: {textAlign: 'center'}
             }}/>
-          )}
-          {modalClient?.phone_number && (
+          ) : (
+              <TextField variant={"filled"} value={modalClient?.address || ""} name={"address"} label={"Адрес"} onChange={inputChangeHandler} sx={{
+                gridColumnStart: "1",
+                gridColumnEnd: "3",
+              }} fullWidth inputProps={{
+                style: {textAlign: 'center'}
+              }}/>
+           )}
+          {client?.phone_number && (
             <Autocomplete
                 fullWidth
                 required
@@ -191,34 +198,34 @@ const CreateCard = ({client}) => {
                 }}
             />
           )}
-          {modalClient?.mac_address && (
+          {client?.mac_address && (
               <TextField variant={"filled"} value={modalClient?.mac_address} label={"Мак роутера"} fullWidth inputProps={{
                 style: {textAlign: 'center'}
               }}/>
           )}
-          {modalClient?.ip_address && (
+          {client?.ip_address && (
               <TextField variant={"filled"} value={modalClient?.ip_address} label={"Айпи адрес"} fullWidth inputProps={{
                 style: {textAlign: 'center'}
               }}/>
           )}
-          {modalClient?.mac_onu && (
+          {client?.mac_onu && (
                <TextField variant={"filled"} value={""} label={"Mac onu"} fullWidth inputProps={{
                 style: {textAlign: 'center'}
               }}/>
           )}
-          {modalClient?.ip_olt && (
+          {client?.ip_olt && (
               <TextField variant={"filled"} value={""} label={"IP OLT"} fullWidth inputProps={{
                 style: {textAlign: 'center'}
               }}/>
           )}
 
-          <TextField variant={"filled"} value={modalClient?.call_from} label={"Номер с которого звонили"} sx={{
+          <TextField variant={"filled"} value={modalClient?.call_from || ""} onChange={inputChangeHandler} name={"call_from"} label={"Номер с которого звонили"} sx={{
             gridColumnStart: "1",
-            gridColumnEnd: modalClient?.ls_abon ? "2" : '3',
+            gridColumnEnd: client?.ls_abon ? "2" : '3',
           }} fullWidth inputProps={{
             style: {textAlign: 'center'}
           }}/>
-          {modalClient?.ls_abon && (
+          {client?.ls_abon && (
             <FormControlLabel
                 value="end"
                 control={
@@ -248,7 +255,7 @@ const CreateCard = ({client}) => {
                     title: '',
                   }
               }
-              options={reasons}
+              options={client?.ls_abon ? reasons : reasons.filter(item=>['Callback', 'Желает подключиться', 'Интерком'].includes(item?.title))}
               loading={reasonsLoading}
               renderInput={(params) => (
                   <TextField
@@ -314,9 +321,9 @@ const CreateCard = ({client}) => {
               multiline
               onChange={inputChangeHandler}
               sx={{
-                gridColumnStart: modalClient?.ls_abon ? "2" : "1",
+                gridColumnStart: client?.ls_abon ? "2" : "1",
                 gridColumnEnd: "3",
-                gridRowStart: modalClient?.ls_abon ? '7' : "3",
+                gridRowStart: client?.ls_abon ? '6' : "3",
                 gridRowEnd: '9',
                 width: '100%',
               }}
@@ -342,4 +349,4 @@ const CreateCard = ({client}) => {
   );
 };
 
-export default CreateCard;
+export default memo(CreateCard);
