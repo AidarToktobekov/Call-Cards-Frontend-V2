@@ -12,12 +12,14 @@ const ListTableHeader = () => {
         <th style={{ textAlign: 'center', minWidth: '260px' }}>
           Номер телефона
         </th>
-        <th style={{ minWidth: '10px', maxWidth: '200px', textAlign: 'center' }}>
+        <th
+          style={{ minWidth: '150px', maxWidth: '200px', textAlign: 'center' }}
+        >
           Дата создания
         </th>
-        <th>Причина</th>
-        <th>Решение</th>
-        <th>СИП</th>
+        <th style={{ minWidth: '150px' }}>Причина</th>
+        <th style={{ minWidth: '150px' }}>Решение</th>
+        <th style={{ textAlign: 'center' }}>СИП</th>
         <th>Старший смены</th>
         <th>Комментарий</th>
       </tr>

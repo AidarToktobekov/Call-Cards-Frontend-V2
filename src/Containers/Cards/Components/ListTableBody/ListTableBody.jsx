@@ -31,9 +31,13 @@ const ListTableBody = ({ cards }) => (
           <td style={{ textAlign: 'center' }}>{card.created_at}</td>
           <td>{card.reason_title}</td>
           <td>{card.solution_title}</td>
-          <td>{card.sip}</td>
-          <td>{card.spec_full_name}</td>
-          <td>{card.comment}</td>
+          <td style={{ textAlign: 'center' }}>{card.sip}</td>
+          <td style={{ minWidth: '160px', maxWidth: '240px' }}>
+            {card.spec_full_name}
+          </td>
+          <td style={{ minWidth: '180px', maxWidth: '270px' }}>
+            {card.comment}
+          </td>
         </tr>
         <tr>
           <td colSpan={11} style={{ padding: 0 }}>
