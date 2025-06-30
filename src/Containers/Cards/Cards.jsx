@@ -8,22 +8,26 @@ import './cards.css';
 const Cards = () => {
   const {
     cards,
+    filtersState,
     currentPage,
     searchWord,
     cardsLoading,
     handleSearchWordChange,
     onSearchSubmit,
-    handlePageChange
+    handlePageChange,
+    handleFilterChange
   } = useFetchCards();
 
   return (
     <div className='list'>
       <Paper className='list-paper'>
         <ListHeader
+          filtersState={filtersState}
           searchWord={searchWord}
           cardsLoading={cardsLoading}
           handleSearchWordChange={handleSearchWordChange}
           onSearchSubmit={onSearchSubmit}
+          handleFilterChange={handleFilterChange}
         />
         <ItemsList
           cards={cards}

@@ -1,5 +1,4 @@
 import React, { memo } from 'react';
-import { Divider } from '@mui/material';
 
 const ListTableHeader = () => {
   return (

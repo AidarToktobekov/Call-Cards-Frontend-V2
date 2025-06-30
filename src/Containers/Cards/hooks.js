@@ -79,28 +79,35 @@ export const useFetchCards = () => {
     void fetchCards({ ...filtersState, searchWord });
   };
 
-  const fetchCards = useCallback(async filtersState => {
-    try {
-      const params = {
-        start_date: filtersState?.start_date?.format('YYYY-MM-DD'),
-        end_date: filtersState?.end_date?.format('YYYY-MM-DD'),
-        reason: (filtersState?.reasons || []).map(reason => reason?.id),
-        solution: (filtersState?.solutions || []).map(solution => solution?.id),
-        sip: (filtersState?.users || []).map(user => user?.sip),
-        ls_abon: filtersState?.searchWord || '',
-        page: filtersState?.currentPage || 1,
-        page_size: 100
-      };
+  const fetchCards = useCallback(
+    async filtersState => {
+      try {
+        const params = {
+          start_date: filtersState?.start_date?.format('YYYY-MM-DD'),
+          end_date: filtersState?.end_date
+            ? filtersState.end_date.add(1, 'day').format('YYYY-MM-DD')
+            : filtersState?.end_date,
+          reason: (filtersState?.reasons || []).map(reason => reason?.id),
+          solution: (filtersState?.solutions || []).map(
+            solution => solution?.id
+          ),
+          sip: (filtersState?.users || []).map(user => user?.sip),
+          ls_abon: filtersState?.searchWord || '',
+          page: filtersState?.currentPage || 1,
+          page_size: 100
+        };
 
-      setCardsLoading(true);
-      const response = await axiosApi('/cards', { params });
-      setCards(response.data);
-    } catch (e) {
-      dispatch(addSnackbar({ type: 'error', message: e.error || e.message }));
-    } finally {
-      setCardsLoading(false);
-    }
-  }, [dispatch]);
+        setCardsLoading(true);
+        const response = await axiosApi('/cards', { params });
+        setCards(response.data);
+      } catch (e) {
+        dispatch(addSnackbar({ type: 'error', message: e.error || e.message }));
+      } finally {
+        setCardsLoading(false);
+      }
+    },
+    [dispatch]
+  );
 
   return {
     cards,

@@ -8,9 +8,11 @@ const filtersButtonId = 'filtersButton';
 
 const ListHeader = ({
   searchWord,
+  filtersState,
   cardsLoading,
   handleSearchWordChange,
-  onSearchSubmit
+  onSearchSubmit,
+  handleFilterChange
 }) => {
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
@@ -38,9 +40,11 @@ const ListHeader = ({
         </Button>
         <FiltersPopoverContent
           open={open}
+          filtersState={filtersState}
           filtersButtonId={filtersButtonId}
           anchorEl={anchorEl}
           handleFiltersClose={handleFiltersClose}
+          handleFilterChange={handleFilterChange}
         />
         <TextField
           className='list-search-field'

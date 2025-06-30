@@ -4,15 +4,16 @@ import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
-import { useFetchCards, useFetchFilterData } from '../../hooks.js';
+import { useFetchFilterData } from '../../hooks.js';
 
 const PopoverContent = ({
   open,
+  filtersState,
   filtersButtonId,
   anchorEl,
-  handleFiltersClose
+  handleFiltersClose,
+  handleFilterChange
 }) => {
-  const { handleFilterChange, filtersState } = useFetchCards();
   const {
     reasons,
     solutions,

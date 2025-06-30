@@ -71,7 +71,9 @@ export const useFetchCardsByEmployees = () => {
       try {
         const params = {
           start_date: filtersState?.start_date?.format('YYYY-MM-DD'),
-          end_date: filtersState?.end_date?.format('YYYY-MM-DD')
+          end_date: filtersState?.end_date
+            ? filtersState.end_date.add(1, 'day').format('YYYY-MM-DD')
+            : filtersState?.end_date
         };
 
         setCardsByEmployeesLoading(true);
