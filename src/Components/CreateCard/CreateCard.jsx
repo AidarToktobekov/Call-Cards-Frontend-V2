@@ -67,7 +67,7 @@ const CreateCard = ({client}) => {
     };
 
     fetchData();
-  }, [fetchReasons, fetchSolutions]);
+  }, []);
 
   useEffect(() => {
     setModalClient(client)
@@ -145,6 +145,7 @@ const CreateCard = ({client}) => {
         <Grid component={"form"} onSubmit={submitFormHandler} sx={{
           width: '100%',
           maxWidth: '1000px',
+          minWidth: '600px',
           maxHeight: '620px',
           overflowY: 'auto',
           padding: '10px',
@@ -152,67 +153,89 @@ const CreateCard = ({client}) => {
           gridTemplateColumns: "calc(50% - 5px) calc(50% - 5px)",
           gap: '10px',
         }}>
-          <TextField variant={"filled"} value={modalClient?.full_name} label={"ФИО"} fullWidth sx={{
+          {modalClient?.full_name && (
+            <TextField variant={"filled"} value={modalClient?.full_name} label={"ФИО"} fullWidth sx={{
+              gridColumnStart: "1",
+              gridColumnEnd: "3",
+            }} inputProps={{
+              style: {textAlign: 'center'}
+            }}/>
+          )}
+          {modalClient?.ls_abon && (
+            <TextField variant={"filled"} value={modalClient?.ls_abon} label={"Лицевой счет"} fullWidth inputProps={{
+              style: {textAlign: 'center'}
+            }}/>
+          )}
+           {modalClient?.address && (
+            <TextField variant={"filled"} value={modalClient?.address} label={"Адрес"} fullWidth inputProps={{
+             style: {textAlign: 'center'}
+            }}/>
+          )}
+          {modalClient?.phone_number && (
+            <Autocomplete
+                fullWidth
+                required
+                multiple
+                options={modalClient?.phone_number}
+                value={
+                  Array.isArray(modalClient?.phone_number) ? modalClient.phone_number : []
+                }
+                disableClearable
+                readOnly
+                renderInput={(params) => (
+                    <TextField {...params} label={'Номера'}></TextField>
+                )}
+                sx={{
+                  gridColumnStart: "1",
+                  gridColumnEnd: "3",
+                }}
+            />
+          )}
+          {modalClient?.mac_address && (
+              <TextField variant={"filled"} value={modalClient?.mac_address} label={"Мак роутера"} fullWidth inputProps={{
+                style: {textAlign: 'center'}
+              }}/>
+          )}
+          {modalClient?.ip_address && (
+              <TextField variant={"filled"} value={modalClient?.ip_address} label={"Айпи адрес"} fullWidth inputProps={{
+                style: {textAlign: 'center'}
+              }}/>
+          )}
+          {modalClient?.mac_onu && (
+               <TextField variant={"filled"} value={""} label={"Mac onu"} fullWidth inputProps={{
+                style: {textAlign: 'center'}
+              }}/>
+          )}
+          {modalClient?.ip_olt && (
+              <TextField variant={"filled"} value={""} label={"IP OLT"} fullWidth inputProps={{
+                style: {textAlign: 'center'}
+              }}/>
+          )}
+
+          <TextField variant={"filled"} value={modalClient?.call_from} label={"Номер с которого звонили"} sx={{
             gridColumnStart: "1",
-            gridColumnEnd: "3",
-          }} inputProps={{
+            gridColumnEnd: modalClient?.ls_abon ? "2" : '3',
+          }} fullWidth inputProps={{
             style: {textAlign: 'center'}
           }}/>
-          <TextField variant={"filled"} value={modalClient?.ls_abon} label={"Лицевой счет"} fullWidth inputProps={{
-            style: {textAlign: 'center'}
-          }}/>
-          <TextField variant={"filled"} value={modalClient?.address} label={"Адрес"} fullWidth inputProps={{
-            style: {textAlign: 'center'}
-          }}/>
-          <Autocomplete
-              fullWidth
-              required
-              multiple
-              options={modalClient?.phone_number}
-              value={
-                Array.isArray(modalClient?.phone_number) ? modalClient.phone_number : []
-              }
-              disableClearable
-              readOnly
-              renderInput={(params) => (
-                  <TextField {...params} label={'Номера'}></TextField>
-              )}
-              sx={{
-                gridColumnStart: "1",
-                gridColumnEnd: "3",
-              }}
-          />
-          <TextField variant={"filled"} value={modalClient?.mac_address} label={"Мак роутера"} fullWidth inputProps={{
-            style: {textAlign: 'center'}
-          }}/>
-          <TextField variant={"filled"} value={modalClient?.ip_address} label={"Айпи адрес"} fullWidth inputProps={{
-            style: {textAlign: 'center'}
-          }}/>
-          <TextField variant={"filled"} value={""} label={"Mac onu"} fullWidth inputProps={{
-            style: {textAlign: 'center'}
-          }}/>
-          <TextField variant={"filled"} value={""} label={"IP OLT"} fullWidth inputProps={{
-            style: {textAlign: 'center'}
-          }}/>
-          <TextField variant={"filled"} value={modalClient?.call_from} label={"Номер с которого звонили"} fullWidth inputProps={{
-            style: {textAlign: 'center'}
-          }}/>
-          <FormControlLabel
-              value="end"
-              control={
-                <Switch
-                    checked={!!modalClient?.save_call_from}
-                    color="primary"
-                    onChange={(_, value) =>
-                        inputChangeHandler({
-                          target: {
-                            name: 'save_call_from',
-                            value,
-                          },
-                        })
-                    }
-                />
-              } label="Сохранить в Гидре номер с которого звонили" labelPlacement="end"/>
+          {modalClient?.ls_abon && (
+            <FormControlLabel
+                value="end"
+                control={
+                  <Switch
+                      checked={!!modalClient?.save_call_from}
+                      color="primary"
+                      onChange={(_, value) =>
+                          inputChangeHandler({
+                            target: {
+                              name: 'save_call_from',
+                              value,
+                            },
+                          })
+                      }
+                  />
+                } label="Сохранить в Гидре номер с которого звонили" labelPlacement="end"/>
+          )}
           <Autocomplete
               fullWidth
               getOptionLabel={(option) => option.title}
@@ -291,9 +314,9 @@ const CreateCard = ({client}) => {
               multiline
               onChange={inputChangeHandler}
               sx={{
-                gridColumnStart: "2",
+                gridColumnStart: modalClient?.ls_abon ? "2" : "1",
                 gridColumnEnd: "3",
-                gridRowStart: '7',
+                gridRowStart: modalClient?.ls_abon ? '7' : "3",
                 gridRowEnd: '9',
                 width: '100%',
               }}
