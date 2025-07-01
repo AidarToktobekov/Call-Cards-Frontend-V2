@@ -31,3 +31,29 @@ export const register = createAsyncThunk(
     }
   }
 );
+
+export const editEmployees = createAsyncThunk(
+  'user/editEmployees',
+  async (userMutation) => {
+    try {
+      const { data: profile } = await axiosApi.put(
+        `/users/${userMutation?.id}`,
+        userMutation
+      );
+
+      return profile;
+    } catch (e) {
+      throw new Error(e);
+    }
+  }
+);
+
+export const deleteUser = createAsyncThunk('user/deleteUser', async (id) => {
+  try {
+    const { data: res } = await axiosApi.delete(`/users/${id}`);
+
+    return res;
+  } catch (e) {
+    throw new Error(e);
+  }
+});

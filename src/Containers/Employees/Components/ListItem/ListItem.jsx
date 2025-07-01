@@ -1,11 +1,15 @@
-import React from 'react';
-import { Button, Divider, IconButton, Popover } from '@mui/material';
+import {useState} from 'react';
+import {Button, Divider, IconButton, Popover} from '@mui/material';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
+import Modal from "../../../../Components/Modal/Modal.jsx";
+import EmployeeForm from "../../../../Components/EmployeeForm/EmployeeForm.jsx";
 
 const ListItem = ({ item }) => {
-  const [anchorEl, setAnchorEl] = React.useState(null);
+  const [anchorEl, setAnchorEl] = useState(null);
+  const [openModal, setOpenModal] = useState(false);
+  const closeModal = () => setOpenModal(false);
 
   const handleClick = event => {
     setAnchorEl(event.currentTarget);
@@ -38,7 +42,7 @@ const ListItem = ({ item }) => {
         },
       }}
     >
-      <Button sx={{color: '#FFFFFF'}} startIcon={<EditIcon />}>
+      <Button sx={{color: '#FFFFFF'}} startIcon={<EditIcon />} onClick={() => setOpenModal(true)}>
         Редактировать
       </Button>
       <Button color='error' startIcon={<DeleteIcon />}>
@@ -72,7 +76,9 @@ const ListItem = ({ item }) => {
           <Divider />
         </td>
       </tr>
-      {/*Для модалки*/}
+      <Modal open={openModal} handleClose={closeModal}>
+        <EmployeeForm id={item.id}/>
+      </Modal>
     </>
   );
 };

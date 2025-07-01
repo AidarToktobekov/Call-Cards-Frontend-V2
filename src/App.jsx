@@ -1,4 +1,4 @@
-import { Navigate, Route, Routes } from 'react-router-dom';
+import {Navigate, Route, Routes} from 'react-router-dom';
 import { useAppSelector } from './app/hooks.js';
 import SignIn from './Containers/SignIn/SignIn.jsx';
 import Notifications from './Components/Notifications/Notifications.jsx';

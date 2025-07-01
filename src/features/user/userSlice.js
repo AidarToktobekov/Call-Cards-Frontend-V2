@@ -1,5 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 import {
+  editEmployees,
   login,
   register,
 } from './userThunk';
@@ -10,6 +11,7 @@ const initialState = {
   loginError: null,
   registerError: null,
   registerLoading: false,
+  editEmployeeLoading: false,
 };
 
 const UsersSlice = createSlice({
@@ -50,6 +52,15 @@ const UsersSlice = createSlice({
     builder.addCase(register.rejected, (state, { payload: error }) => {
       state.registerError = error;
       state.registerLoading = false;
+    });
+    builder.addCase(editEmployees.pending, (state) => {
+      state.editEmployeeLoading = true;
+    });
+    builder.addCase(editEmployees.fulfilled, (state) => {
+      state.editEmployeeLoading = false;
+    });
+    builder.addCase(editEmployees.rejected, (state) => {
+      state.editEmployeeLoading = false;
     });
   },
 });
