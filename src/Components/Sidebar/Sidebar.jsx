@@ -8,8 +8,8 @@ import EmojiObjectsIcon from '@mui/icons-material/EmojiObjects';
 import RepeatIcon from '@mui/icons-material/Repeat';
 import VoiceOverOffIcon from '@mui/icons-material/VoiceOverOff';
 import LogoutIcon from '@mui/icons-material/Logout';
-import './sidebar.css';
 import { useAppSelector } from '../../app/hooks.js';
+import './sidebar.css';
 
 const dutyButtons = [
   <Button key='1' color='success' disabled={false}>
@@ -107,7 +107,7 @@ const Sidebar = () => {
               className={`sidebar-nav-btn ${pathname === '/solution-and-reason' ? 'nav-button-active' : 'nav-button-inactive'}`}
               variant='text'
               size='large'
-              href='/solution-and-reason'
+              href='/actions_tree'
             >
               Причины / Решения
             </Button>

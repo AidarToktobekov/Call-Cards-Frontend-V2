@@ -1,10 +1,10 @@
-import {useState} from 'react';
-import {Button, Divider, IconButton, Popover} from '@mui/material';
+import { useCallback, useState } from 'react';
+import { Button, Divider, IconButton, Popover } from '@mui/material';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
-import Modal from "../../../../Components/Modal/Modal.jsx";
-import EmployeeForm from "../../../../Components/EmployeeForm/EmployeeForm.jsx";
+import Modal from '../../../../Components/Modal/Modal.jsx';
+import EmployeeForm from '../../../../Components/EmployeeForm/EmployeeForm.jsx';
 
 const ListItem = ({ item }) => {
   const [anchorEl, setAnchorEl] = useState(null);
@@ -22,33 +22,41 @@ const ListItem = ({ item }) => {
   const open = Boolean(anchorEl);
   const id = open ? 'simple-popover' : undefined;
 
-  const ItemPopover = () => (
-    <Popover
-      id={id}
-      open={open}
-      anchorEl={anchorEl}
-      onClose={handleClose}
-      anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}
-      sx={{
-        '& .MuiPaper-root': {
-          display: 'flex',
-          flexDirection: 'column',
-          gap: '6px',
-          p: '8px 6px',
-          borderRadius: '12px'
-        },
-        '& button': {
-          borderRadius: '10px',
-        },
-      }}
-    >
-      <Button sx={{color: '#FFFFFF'}} startIcon={<EditIcon />} onClick={() => setOpenModal(true)}>
-        Редактировать
-      </Button>
-      <Button color='error' startIcon={<DeleteIcon />}>
-        Удалить
-      </Button>
-    </Popover>
+  const ItemPopover = useCallback(
+    () => (
+      <Popover
+        id={id}
+        open={open}
+        anchorEl={anchorEl}
+        onClose={handleClose}
+        anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}
+        sx={{
+          '& .MuiPaper-root': {
+            display: 'flex',
+            flexDirection: 'column',
+            gap: '6px',
+            p: '8px 6px',
+            borderRadius: '12px'
+          },
+          '& button': { borderRadius: '10px' }
+        }}
+      >
+        <Button
+          sx={{ color: '#FFFFFF' }}
+          startIcon={<EditIcon />}
+          onClick={() => {
+            setOpenModal(true);
+            handleClose();
+          }}
+        >
+          Редактировать
+        </Button>
+        <Button color='error' startIcon={<DeleteIcon />}>
+          Удалить
+        </Button>
+      </Popover>
+    ),
+    [anchorEl, id, open]
   );
 
   return (
@@ -77,7 +85,7 @@ const ListItem = ({ item }) => {
         </td>
       </tr>
       <Modal open={openModal} handleClose={closeModal}>
-        <EmployeeForm id={item.id}/>
+        <EmployeeForm id={item.id} />
       </Modal>
     </>
   );

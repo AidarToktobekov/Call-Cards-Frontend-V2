@@ -31,11 +31,11 @@ const ListHeader = ({
           e.preventDefault();
           onSearchSubmit();
         }}
+        style={{justifyContent: 'flex-end'}}
       >
         <Button
           className='filters-button'
           onClick={handleFiltersClick}
-          sx={{ ml: 'auto' }}
         >
           <FilterListIcon />
           Фильтры

@@ -3,15 +3,15 @@ import AddIcon from '@mui/icons-material/Add';
 import { useLocation } from 'react-router-dom';
 import {
   Button,
+  CircularProgress,
+  List,
   ListItem,
   ListItemButton,
   Popover,
   TextField,
-  Typography,
-  List,
-  CircularProgress
+  Typography
 } from '@mui/material';
-import { PAGE_NAMES } from '../../constants.js';
+import { getPageTitle } from '../../constants.js';
 import './contentHeader.css';
 import { useFetchClient } from '../../hooks/clientsHook.js';
 import Modal from '../Modal/Modal.jsx';
@@ -48,7 +48,7 @@ const ContentHeader = () => {
   return (
     <div className='content-header'>
       <Typography variant='h4' component='h4'>
-        {PAGE_NAMES[pathname]}
+        {getPageTitle(pathname)}
       </Typography>
       <Button
         variant='contained'

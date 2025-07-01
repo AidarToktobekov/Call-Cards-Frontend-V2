@@ -106,6 +106,10 @@
   z-index: 999;
 }
 
+.list table tbody tr:hover {
+  background-color: rgba(255, 255, 255, .1);
+}
+
 .list table th {
   text-align: left;
   padding: 18px 16px;
@@ -113,10 +117,7 @@
 
 .list table td {
   padding: 10px 14px;
-}
-
-.list table td {
-  vertical-align: top;
+  /*vertical-align: top;*/
 }
 
 .list-table-wrapper ul {

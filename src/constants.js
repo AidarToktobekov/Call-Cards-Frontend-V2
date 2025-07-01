@@ -5,7 +5,7 @@ export const API_URL = 'http://10.1.4.9:8011';
 export const PAGE_NAMES = {
   '/': 'Новая карточка',
   '/sign-up': 'Новый пользователь',
-  '/solution-and-reason': 'Причины/решения',
+  '/actions_tree': 'Причины / решения',
   '/cards': 'Звонки',
   '/stats_by_employees': 'Отчёт по сотрудникам',
   '/stats_by_reasons': 'Звонки по причинам',
