@@ -3,7 +3,7 @@ import { Paper } from '@mui/material';
 import ListHeader from './Components/ListHeader/ListHeader.jsx';
 import ItemsList from './Components/ItemsList/ItemsList.jsx';
 import { useFetchCards } from './hooks.js';
-import './cards.css';
+import '../../globalStyles/list.css';
 
 const Cards = () => {
   const {

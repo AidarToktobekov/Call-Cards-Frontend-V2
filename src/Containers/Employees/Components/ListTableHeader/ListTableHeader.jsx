@@ -5,9 +5,9 @@ const ListTableHeader = () => {
   return (
     <thead>
       <tr>
-        <th>СИП</th>
+        <th>Логин</th>
         <th style={{ maxWidth: '240px' }}>Сотрудник</th>
-        <th>Кол-во звонков</th>
+        <th>СИП</th>
       </tr>
       <tr>
         <td colSpan={11} style={{ padding: 0 }}>

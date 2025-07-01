@@ -6,6 +6,7 @@ import Sidebar from './Components/Sidebar/Sidebar.jsx';
 import ContentHeader from './Components/ContentHeader/ContentHeader.jsx';
 import Cards from './Containers/Cards/Cards.jsx';
 import CardsReportByEmployees from './Containers/CardsReportByEmployees/CardsReportByEmployees.jsx';
+import Employees from './Containers/Employees/Employees.jsx';
 import './App.css';
 
 const App = () => {
@@ -21,6 +22,13 @@ const App = () => {
     <>
       <Route path='/cards' element={<Cards />} />
       <Route path='/stats_by_employees' element={<CardsReportByEmployees />} />
+      {user && user.role === 'admin' && adminPages()}
+    </>
+  );
+
+  const adminPages = () => (
+    <>
+      <Route path='/employees' element={<Employees />} />
     </>
   );
 

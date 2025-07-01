@@ -6,7 +6,12 @@ import FiltersPopoverContent from '../FiltersPopoverContent/FiltersPopoverConten
 
 const filtersButtonId = 'filtersButton';
 
-const ListHeader = ({ filtersState, listLoading, onSearchSubmit, handleFilterChange }) => {
+const ListHeader = ({
+  filtersState,
+  listLoading,
+  onSearchSubmit,
+  handleFilterChange
+}) => {
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
 
@@ -27,7 +32,11 @@ const ListHeader = ({ filtersState, listLoading, onSearchSubmit, handleFilterCha
           onSearchSubmit();
         }}
       >
-        <Button className='filters-button' onClick={handleFiltersClick}>
+        <Button
+          className='filters-button'
+          onClick={handleFiltersClick}
+          sx={{ ml: 'auto' }}
+        >
           <FilterListIcon />
           Фильтры
         </Button>

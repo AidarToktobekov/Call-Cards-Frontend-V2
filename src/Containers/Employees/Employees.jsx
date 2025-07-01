@@ -6,26 +6,17 @@ import { useFetchCardsByEmployees } from './hooks.js';
 import '../../globalStyles/list.css';
 
 const CardsReportByEmployees = () => {
-  const {
-    filtersState,
-    cardsByEmployees,
-    cardsByEmployeesLoading,
-    onSearchSubmit,
-    handleFilterChange
-  } = useFetchCardsByEmployees();
+  const { employees, employeesLoading, onSearchSubmit } =
+    useFetchCardsByEmployees();
 
   return (
     <div className='list'>
       <Paper className='list-paper'>
         <ListHeader
-          filtersState={filtersState}
-          listLoading={cardsByEmployeesLoading}
+          listLoading={employeesLoading}
           onSearchSubmit={onSearchSubmit}
-          handleFilterChange={handleFilterChange}
         />
-        <ItemsList
-          list={cardsByEmployees}
-        />
+        <ItemsList list={employees} />
       </Paper>
     </div>
   );
