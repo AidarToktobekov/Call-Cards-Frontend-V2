@@ -8,6 +8,7 @@ const ListTableHeader = () => {
         <th>Логин</th>
         <th style={{ maxWidth: '240px' }}>Сотрудник</th>
         <th>СИП</th>
+        <th style={{ textAlign: 'center', width: '110px' }}>Действия</th>
       </tr>
       <tr>
         <td colSpan={11} style={{ padding: 0 }}>
