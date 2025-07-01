@@ -57,6 +57,7 @@ const ListHeader = ({
         />
         <Button
           id={filtersButtonId}
+          className='MuiButton-outlined-white'
           variant='outlined'
           type='submit'
           loadingPosition='start'

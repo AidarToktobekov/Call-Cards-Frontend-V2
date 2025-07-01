@@ -41,3 +41,17 @@ body {
 .routes-content {
   grid-area: main;
 }
+
+.MuiButton-outlined-white {
+  border-color: #FFFFFF !important;
+  background-color: rgba(255, 255, 255, 0) !important;
+}
+
+.MuiButton-outlined-white:hover {
+  background-color: rgba(255, 255, 255, .1) !important;
+}
+
+.MuiButton-outlined-white.MuiButton-loading {
+  color: var(--mui-disabled-color) !important;
+  border-color: var(--mui-disabled-color) !important;
+}

@@ -28,20 +28,8 @@
 
 .list-search button[type=submit],
 .list-search .create-employee-button {
-  border-color: #FFFFFF !important;
-  background-color: rgba(255, 255, 255, 0) !important;
   padding: 6px 14px 6px 16px;
   gap: 2px;
-}
-
-.list-search button[type=submit]:hover,
-.list-search .create-employee-button:hover {
-  background-color: rgba(255, 255, 255, .1) !important;
-}
-
-.list-search button[type=submit].MuiButton-loading {
-  color: var(--mui-disabled-color) !important;
-  border-color: var(--mui-disabled-color) !important;
 }
 
 .list-search-field {

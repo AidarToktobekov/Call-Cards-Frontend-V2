@@ -18,8 +18,8 @@ const ListHeader = ({ onSearchSubmit }) => {
         }}
       >
         <Button
-          className='create-employee-button'
           id={filtersButtonId}
+          className='create-employee-button MuiButton-outlined-white'
           variant='outlined'
           type='button'
           loadingPosition='start'
