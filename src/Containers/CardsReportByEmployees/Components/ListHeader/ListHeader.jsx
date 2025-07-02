@@ -31,7 +31,7 @@ const ListHeader = ({
           e.preventDefault();
           onSearchSubmit();
         }}
-        style={{justifyContent: 'flex-end'}}
+        style={{justifyContent: 'space-between'}}
       >
         <Button
           className='filters-button'

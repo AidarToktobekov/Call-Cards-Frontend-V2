@@ -16,12 +16,14 @@ const PopoverContent = ({
 }) => {
   const {
     reasons,
-    solutions,
     users,
     reasonsLoading,
     solutionsLoading,
     usersLoading,
-    fetchFilterData
+    fetchFilterData,
+    handleFilterSolution,
+    filteredSolutions,
+    filteredSolutionsLoading
   } = useFetchFilterData();
 
   useEffect(() => {
@@ -54,14 +56,19 @@ const PopoverContent = ({
             />
           )}
           value={filtersState?.reasons || []}
-          onChange={(e, value) => handleFilterChange('reasons', value)}
+          onChange={(e, value) => {
+            handleFilterChange('reasons', value);
+            handleFilterSolution(value);
+          }}
         />
         <Autocomplete
           multiple
-          options={solutions}
-          loading={solutionsLoading}
+          options={filteredSolutions}
+          loading={solutionsLoading || filteredSolutionsLoading}
           getOptionLabel={option => option.title}
           getOptionKey={option => option.id}
+          loadingText={"Терпение сделай..."}
+          noOptionsText={"Ты может причину выбереш?"}
           renderInput={params => (
             <TextField
               {...params}

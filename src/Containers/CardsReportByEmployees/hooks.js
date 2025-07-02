@@ -12,6 +12,23 @@ export const useFetchFilterData = () => {
   const [reasonsLoading, setReasonsLoading] = useState(false);
   const [solutionsLoading, setSolutionsLoading] = useState(false);
   const [usersLoading, setUsersLoading] = useState(false);
+  const [filteredSolutions, setFilteredSolutions] = useState([]);
+  const [filteredSolutionsLoading, setFilteredSolutionsLoading] = useState(false);
+
+  const handleFilterSolution = useCallback((value) =>{
+    setFilteredSolutionsLoading(true);
+    const newFilteredSolutions = [];
+
+    solutions.map(solution => {
+      value.map(reason => {
+        if (reason.id === solution.reason.id){
+          newFilteredSolutions.push(solution);
+        }
+      })
+    });
+    setFilteredSolutions(newFilteredSolutions);
+    setFilteredSolutionsLoading(true);
+  }, [solutions]);
 
   const fetchFilterData = useCallback(async () => {
     try {
@@ -45,7 +62,10 @@ export const useFetchFilterData = () => {
     reasonsLoading,
     solutionsLoading,
     usersLoading,
-    fetchFilterData
+    fetchFilterData,
+    handleFilterSolution,
+    filteredSolutions,
+    filteredSolutionsLoading
   };
 };
 
