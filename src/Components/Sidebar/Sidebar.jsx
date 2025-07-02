@@ -1,6 +1,6 @@
-import React from 'react';
+import React, {useState} from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { Button, ButtonGroup, Divider, Typography } from '@mui/material';
+import {Button, ButtonGroup, Divider, Grid, Typography} from '@mui/material';
 import ContactPhoneIcon from '@mui/icons-material/ContactPhone';
 import GroupIcon from '@mui/icons-material/Group';
 import HelpIcon from '@mui/icons-material/Help';
@@ -8,8 +8,12 @@ import EmojiObjectsIcon from '@mui/icons-material/EmojiObjects';
 import RepeatIcon from '@mui/icons-material/Repeat';
 import VoiceOverOffIcon from '@mui/icons-material/VoiceOverOff';
 import LogoutIcon from '@mui/icons-material/Logout';
-import { useAppSelector } from '../../app/hooks.js';
+import {useAppDispatch, useAppSelector} from '../../app/hooks.js';
 import './sidebar.css';
+import Modal from "../Modal/Modal.jsx";
+import MoodBadIcon from '@mui/icons-material/MoodBad';
+import InsertEmoticonIcon from '@mui/icons-material/InsertEmoticon';
+import {logout} from "../../features/user/userSlice.js";
 
 const dutyButtons = [
   <Button key='1' color='success' disabled={false}>
@@ -21,9 +25,12 @@ const dutyButtons = [
 ];
 
 const Sidebar = () => {
+  const [openModal, setOpenModal] = useState(false);
+  const handleClose = () => setOpenModal(false);
   const { pathname } = useLocation();
   const navigate = useNavigate();
   const { user } = useAppSelector(state => state.user);
+  const dispatch = useAppDispatch();
 
   return (
     <div className='sidebar'>
@@ -127,10 +134,45 @@ const Sidebar = () => {
           color='error'
           size='large'
           sx={{ mt: 'auto' }}
+          onClick={()=>setOpenModal(true)}
         >
           <LogoutIcon />
           Выйти из системы
         </Button>
+        <Modal open={openModal} handleClose={handleClose}>
+          <Grid sx={{
+            width: '350px'
+          }}>
+            <Typography variant={"h3"} sx={{
+              fontSize: '30px',
+              textAlign: 'center',
+              mb: 3,
+            }}>
+              Уходишь?
+            </Typography>
+            <Grid sx={{
+              display: 'flex',
+              justifyContent: 'space-between',
+              gap: 1,
+              "&>button>span>.css-1sh91j5-MuiButton-startIcon>*:nth-of-type(1)": {
+                fontSize: "28px",
+              }
+            }}>
+              <Button variant={'outlined'} color={"error"} startIcon={<MoodBadIcon/>} onClick={()=> {
+                dispatch(logout())
+              }} fullWidth sx={{
+                fontSize: '18px'
+              }}>
+                Ухожу
+              </Button>
+              <Button color={'primary'} onClick={handleClose} variant={'outlined'} fullWidth startIcon={<InsertEmoticonIcon />} sx={{
+                fontSize: '18px'
+              }}>
+                Остаюсь
+              </Button>
+            </Grid>
+          </Grid>
+        </Modal>
       </div>
     </div>
   );
