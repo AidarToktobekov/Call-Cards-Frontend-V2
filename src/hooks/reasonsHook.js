@@ -16,7 +16,7 @@ export const useFetchReasons = () => {
     } catch (error) {
       dispatch(addSnackbar({
         type: "error",
-        message: error?.error,
+        message: error?.error || error?.message || "Не известная ошибка!",
       }))
       console.error(error);
     } finally {
@@ -25,4 +25,25 @@ export const useFetchReasons = () => {
   }, [dispatch]);
 
   return { reasons, reasonsLoading, fetchReasons };
+}
+
+export const useCreateReasons = () => {
+  const [reasonLoading, setReasonLoading] = useState(false);
+  const dispatch = useAppDispatch();
+
+  const createReasons = async (reasonMutation) => {
+    setReasonLoading(true)
+    try{
+      await axiosApi.post('/actions_tree/create_reason', reasonMutation);
+    }catch(error){
+      dispatch(addSnackbar({
+        type: "error",
+        message: error?.error || error?.message || "Не известная ошибка!",
+      }))
+    }finally{
+      setReasonLoading(false)
+    }
+  }
+
+  return { reasonLoading, createReasons };
 }

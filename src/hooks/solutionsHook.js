@@ -27,3 +27,24 @@ export const useFetchSolutions = () => {
 
   return { solutions, solutionsLoading, fetchSolutions };
 }
+
+export const useCreateSolution = () => {
+  const [solutionLoading, setSolutionLoading] = useState(false);
+  const dispatch = useAppDispatch();
+
+  const createSolutions = async (solutionMutation) => {
+    setSolutionLoading(true)
+    try{
+      await axiosApi.post('/actions_tree/create_solution', solutionMutation);
+    }catch(error){
+      dispatch(addSnackbar({
+        type: "error",
+        message: error?.error || error?.message || "Не известная ошибка!",
+      }))
+    }finally{
+      setSolutionLoading(false)
+    }
+  }
+
+  return { solutionLoading, createSolutions };
+}

@@ -1,19 +1,10 @@
-import React, { useState } from 'react';
+import React, {useState} from 'react';
 import AddIcon from '@mui/icons-material/Add';
-import { useLocation } from 'react-router-dom';
-import {
-  Button,
-  CircularProgress,
-  List,
-  ListItem,
-  ListItemButton,
-  Popover,
-  TextField,
-  Typography
-} from '@mui/material';
-import { getPageTitle } from '../../constants.js';
+import {useLocation} from 'react-router-dom';
+import {Button, CircularProgress, List, ListItem, ListItemButton, Popover, TextField, Typography} from '@mui/material';
+import {getPageTitle} from '../../constants.js';
 import './contentHeader.css';
-import { useFetchClient } from '../../hooks/clientsHook.js';
+import {useFetchClient} from '../../hooks/clientsHook.js';
 import Modal from '../Modal/Modal.jsx';
 import CreateCard from '../CreateCard/CreateCard.jsx';
 

@@ -1,5 +1,4 @@
 import {
-  Alert,
   Autocomplete,
   Button,
   CircularProgress,
@@ -10,11 +9,12 @@ import {
   Grid
 } from '@mui/material';
 import {memo, useEffect, useState} from 'react';
-import {useAppSelector} from '../../app/hooks.js';
+import {useAppDispatch, useAppSelector} from '../../app/hooks.js';
 import {useFetchReasons} from "../../hooks/reasonsHook.js";
 import {useFetchSolutions} from "../../hooks/solutionsHook.js";
 import {useCreateCards} from "../../hooks/cardsHook.js";
 import {useFetchClient} from "../../hooks/clientsHook.js";
+import {addSnackbar} from "../../features/notifications/notificationsSlice.js";
 
 const CreateCard = ({client}) => {
   const user = useAppSelector(state => state.user.user);
@@ -23,13 +23,13 @@ const CreateCard = ({client}) => {
   const {  cardLoading, createCards } = useCreateCards();
   const { resetClient} = useFetchClient();
   const [modalClient, setModalClient] = useState(client);
+  const dispatch = useAppDispatch();
   const [filteredSolution, setFilteredSolution] = useState([
     {
       id: 'placeholder',
       title: 'Выберите причину',
     },
   ]);
-  const [error, setError] = useState('');
 
   const inputChangeHandler = (e) => {
     const { name, value } = e.target;
@@ -109,7 +109,10 @@ const CreateCard = ({client}) => {
       await setModalClient(null);
       await resetClient();
     } else {
-      setError('Зарегстрируйтесь!');
+      dispatch(addSnackbar({
+        type: "error",
+        message: "Зарегестрируйтесь?",
+      }))
     }
   };
 
@@ -123,11 +126,6 @@ const CreateCard = ({client}) => {
         }}>
           Создать карточку
         </Typography>
-        {error && (
-            <Alert severity="error" sx={{ mb: 3 }}>
-              {error}
-            </Alert>
-        )}
         <Grid component={"form"} onSubmit={submitFormHandler} sx={{
           width: '100%',
           maxWidth: '1000px',
@@ -136,49 +134,70 @@ const CreateCard = ({client}) => {
           overflowY: 'auto',
           padding: '10px',
           display: "grid",
-          gridTemplateColumns: "calc(50% - 5px) calc(50% - 5px)",
+          gridTemplateColumns: "1fr 1fr",
+          gridTemplateAreas: client?.ls_abon ? `
+            'full_name full_name'
+            'ls_abon address'
+            'phone_number phone_number'
+            'mac_address ip_address'
+            'mac_onu ip_olt'
+            'call_from save_call_from'
+            'reason solution'
+            'comment comment'
+            'button button'
+           ` : `
+            'full_name full_name'
+            'ls_abon address'
+            'call_from call_from'
+            'reason solution'
+            'comment comment'
+            'button button'
+           `
+          ,
           gap: '10px',
         }}>
-          {client?.full_name ? (
+          {client?.ls_abon ? (
             <TextField variant={"filled"} value={modalClient?.full_name} label={"ФИО"} fullWidth sx={{
-              gridColumnStart: "1",
-              gridColumnEnd: "3",
+              gridArea: "full_name",
             }} inputProps={{
               style: {textAlign: 'center'}
             }}/>
           ) : (
               <TextField variant={"filled"} value={modalClient?.full_name || ""} label={"ФИО"} name={"full_name"} onChange={inputChangeHandler} fullWidth sx={{
-                gridColumnStart: "1",
-                gridColumnEnd: "3",
+                gridArea: "full_name",
+
               }} inputProps={{
                 style: {textAlign: 'center'}
               }}/>
           )}
           {client?.ls_abon ? (
-            <TextField variant={"filled"} value={modalClient?.ls_abon} label={"Лицевой счет"} fullWidth inputProps={{
+            <TextField variant={"filled"} value={modalClient?.ls_abon} sx={{
+              gridArea: "ls_abon",
+            }} label={"Лицевой счет"} fullWidth inputProps={{
               style: {textAlign: 'center'}
             }}/>
           ):(
               <TextField variant={"filled"} value={modalClient?.ls_abon || ""} label={"Лицевой счет"} sx={{
-                gridColumnStart: "1",
-                gridColumnEnd: "3",
+                gridArea: "ls_abon",
               }} name={"ls_abon"} onChange={inputChangeHandler} fullWidth inputProps={{
                 style: {textAlign: 'center'}
               }}/>
           )}
-           {client?.address ? (
-            <TextField variant={"filled"} value={modalClient?.address} label={"Адрес"} fullWidth inputProps={{
+           {client?.ls_abon ? (
+            <TextField variant={"filled"} value={modalClient?.address} sx={{
+              gridArea: "address",
+            }} label={"Адрес"} fullWidth inputProps={{
              style: {textAlign: 'center'}
             }}/>
           ) : (
               <TextField variant={"filled"} value={modalClient?.address || ""} name={"address"} label={"Адрес"} onChange={inputChangeHandler} sx={{
-                gridColumnStart: "1",
-                gridColumnEnd: "3",
+                gridArea: "address",
+
               }} fullWidth inputProps={{
                 style: {textAlign: 'center'}
               }}/>
            )}
-          {client?.phone_number && (
+          {client?.ls_abon && (
             <Autocomplete
                 fullWidth
                 required
@@ -193,40 +212,51 @@ const CreateCard = ({client}) => {
                     <TextField {...params} label={'Номера'}></TextField>
                 )}
                 sx={{
-                  gridColumnStart: "1",
-                  gridColumnEnd: "3",
+                  gridArea: "phone_number",
+
                 }}
             />
           )}
-          {client?.mac_address && (
-              <TextField variant={"filled"} value={modalClient?.mac_address} label={"Мак роутера"} fullWidth inputProps={{
+          {client?.ls_abon && (
+              <TextField variant={"filled"} sx={{
+                gridArea: "mac_address",
+              }} value={modalClient?.mac_address} label={"Мак роутера"} fullWidth inputProps={{
                 style: {textAlign: 'center'}
               }}/>
           )}
-          {client?.ip_address && (
-              <TextField variant={"filled"} value={modalClient?.ip_address} label={"Айпи адрес"} fullWidth inputProps={{
+          {client?.ls_abon && (
+              <TextField variant={"filled"} sx={{
+                gridArea: "ip_address",
+              }} value={modalClient?.ip_address} label={"Айпи адрес"} fullWidth inputProps={{
                 style: {textAlign: 'center'}
               }}/>
           )}
-          {client?.mac_onu && (
-               <TextField variant={"filled"} value={""} label={"Mac onu"} fullWidth inputProps={{
+          {client?.ls_abon && (
+               <TextField variant={"filled"} sx={{
+                 gridArea: "mac_onu",
+               }} value={""} label={"Mac onu"} fullWidth inputProps={{
                 style: {textAlign: 'center'}
               }}/>
           )}
-          {client?.ip_olt && (
-              <TextField variant={"filled"} value={""} label={"IP OLT"} fullWidth inputProps={{
+          {client?.ls_abon && (
+              <TextField variant={"filled"} value={""} label={"IP OLT"} sx={{
+                gridArea: "ip_olt",
+              }} fullWidth inputProps={{
                 style: {textAlign: 'center'}
               }}/>
           )}
 
           <TextField variant={"filled"} value={modalClient?.call_from || ""} onChange={inputChangeHandler} name={"call_from"} label={"Номер с которого звонили"} sx={{
-            gridColumnStart: "1",
-            gridColumnEnd: client?.ls_abon ? "2" : '3',
+            gridArea: "call_from",
+
           }} fullWidth inputProps={{
             style: {textAlign: 'center'}
           }}/>
           {client?.ls_abon && (
             <FormControlLabel
+                sx={{
+                  gridArea: "save_call_from",
+                }}
                 value="end"
                 control={
                   <Switch
@@ -245,6 +275,9 @@ const CreateCard = ({client}) => {
           )}
           <Autocomplete
               fullWidth
+              sx={{
+                gridArea: "reason",
+              }}
               getOptionLabel={(option) => option.title}
               onChange={(event, newValue) => {
                 selectChangeHandler('reason', newValue);
@@ -281,6 +314,9 @@ const CreateCard = ({client}) => {
           />
           <Autocomplete
               fullWidth
+              sx={{
+                gridArea: "solution",
+              }}
               getOptionLabel={(option) => option.title}
               onChange={(event, newValue) => {
                 selectChangeHandler('solution', newValue);
@@ -317,15 +353,16 @@ const CreateCard = ({client}) => {
           />
           <TextField
               label="Комментарий"
-              minRows={3}
               multiline
               onChange={inputChangeHandler}
               sx={{
-                gridColumnStart: client?.ls_abon ? "2" : "1",
-                gridColumnEnd: "3",
-                gridRowStart: client?.ls_abon ? '6' : "3",
-                gridRowEnd: '9',
-                width: '100%',
+                // gridColumnStart: client?.ls_abon ? "2" : "1",
+                // gridColumnEnd: "3",
+                // gridRowStart: client?.ls_abon ? '6' : "3",
+                // gridRowEnd: '9',
+                // width: '100%',
+                gridArea: "comment",
+
               }}
               name={'comment'}
               value={modalClient?.comment || ''}
@@ -336,10 +373,12 @@ const CreateCard = ({client}) => {
               loading={cardLoading}
               type={'submit'}
               sx={{
-                width: '100%',
-                mt: '15px',
-                gridColumnStart: "1",
-                gridColumnEnd: "3",
+                // width: '100%',
+                // mt: '15px',
+                // gridColumnStart: "1",
+                // gridColumnEnd: "3",
+                gridArea: "button",
+
               }}
           >
             Создать
