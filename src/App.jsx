@@ -9,6 +9,7 @@ import CardsReportByEmployees from './Containers/CardsReportByEmployees/CardsRep
 import Employees from './Containers/Employees/Employees.jsx';
 import './App.css';
 import CardsReportByReasons from "./Containers/CardsReportByReasons/CardsReportByReasons.jsx";
+import CardsReportBySolution from "./Containers/CardsReportBySolution/CardsReportBySolution.jsx";
 
 const App = () => {
   const { user } = useAppSelector(state => state.user);
@@ -24,6 +25,7 @@ const App = () => {
       <Route path='/cards' element={<Cards />} />
       <Route path='/stats_by_employees' element={<CardsReportByEmployees />} />
       <Route path='/stats_by_reasons' element={<CardsReportByReasons />} />
+      <Route path='/stats_by_solutions' element={<CardsReportBySolution />} />
       {user && user.role === 'admin' && adminPages()}
     </>
   );

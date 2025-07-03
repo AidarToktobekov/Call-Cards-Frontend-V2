@@ -57,8 +57,8 @@ export const useFetchCardsReportByReasons = () => {
   }, [dispatch]);
 
   return {
-    cardsReportByReasons,
-    cardsReportByReasonsLoading,
+    cardsReportBySolutions: cardsReportByReasons,
+    cardsReportBySolutionsLoading: cardsReportByReasonsLoading,
     filtersState,
     handleFilterChange,
     onSearchSubmit
