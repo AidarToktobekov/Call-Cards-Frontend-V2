@@ -22,6 +22,7 @@ const ReasonsAndSolutions = ()=>{
            }}>
              <Button variant={state.reason ? "contained" : "outlined"} color={"error"}
                      sx={{
+                       background: '#9a3029',
                        fontSize: '18px',
                        width: "calc(40% - 5px)",
                        opacity: state.reason ? "1" : "0.5",
@@ -67,7 +68,7 @@ const ReasonsAndSolutions = ()=>{
                   : '0',
                 opacity: state.reason ? 1 : 0,
                 transition: 'width 0.4s ease, opacity 0.4s ease',
-                border: state.reason ? '2px solid #f44336' : 'none',
+                border: state.reason ? '2px solid #9a3029' : 'none',
                 borderRadius: state.solution && state.reason ? '0 0 0 20px' : "0 0 20px 20px",
                 overflow: 'hidden',
               }}
