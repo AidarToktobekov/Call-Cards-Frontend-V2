@@ -71,20 +71,14 @@ export const useFetchFilterData = () => {
 
 export const useFetchCards = () => {
   const dispatch = useAppDispatch();
-  const [repeatedCalls, setRepeatedCalls] = useState(null);
-  const [repeatedCallsLoading, setRepeatedCallsLoading] = useState(false);
+  const [inactivesCards, setInactivesCards] = useState(null);
+  const [inactivesCardsLoading, setInactivesCardsLoading] = useState(false);
   const [filtersState, setFiltersState] = useState({
     start_date: dayjs().startOf('month'),
     end_date: dayjs().endOf('month')
   });
-  const [searchWord, setSearchWord] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
-
-  const handlePageChange = (_, value = 1) => {
-    if (repeatedCallsLoading) return;
-    setCurrentPage(value);
-    void fetchCards({ ...filtersState, searchWord, currentPage: value });
-  };
+  const [searchWord, setSearchWord] = useState('');
 
   const handleFilterChange = (name, value) =>
     setFiltersState(prevState => ({ ...prevState, [name]: value }));
@@ -93,8 +87,14 @@ export const useFetchCards = () => {
     setSearchWord(e.target.value);
   };
 
+  const handlePageChange = (_, value = 1) => {
+    if (inactivesCardsLoading) return;
+    setCurrentPage(value);
+    void fetchCards({ ...filtersState, searchWord, currentPage: value });
+  };
+
   const onSearchSubmit = () => {
-    if (repeatedCallsLoading) return;
+    if (inactivesCardsLoading) return;
     setCurrentPage(1);
     void fetchCards({ ...filtersState, searchWord });
   };
@@ -102,7 +102,6 @@ export const useFetchCards = () => {
   const fetchCards = useCallback(
     async filtersState => {
       try {
-        setRepeatedCallsLoading(true);
         const params = {
           start_date: filtersState?.start_date?.format('YYYY-MM-DD'),
           end_date: filtersState?.end_date
@@ -112,30 +111,33 @@ export const useFetchCards = () => {
           solution: (filtersState?.solutions || []).map(
             solution => solution?.id
           ),
+          sip: (filtersState?.users || []).map(user => user?.sip),
           ls_abon: filtersState?.searchWord || '',
           page: filtersState?.currentPage || 1,
           page_size: 100
         };
-        const response = await axiosApi(`/cards/repeated_calls`, {params});
-        setRepeatedCalls(response.data);
+
+        setInactivesCardsLoading(true);
+        const response = await axiosApi('/cards/inactives', { params });
+        setInactivesCards(response.data);
       } catch (e) {
         dispatch(addSnackbar({ type: 'error', message: e.error || e.message }));
       } finally {
-        setRepeatedCallsLoading(false);
+        setInactivesCardsLoading(false);
       }
     },
     [dispatch]
   );
 
   return {
-    inactivesCards: repeatedCalls,
+    inactivesCards,
     searchWord,
-    inactivesCardsLoading: repeatedCallsLoading,
-    filtersState,
-    handlePageChange,
+    inactivesCardsLoading,
     currentPage,
+    filtersState,
     handleSearchWordChange,
     handleFilterChange,
+    handlePageChange,
     onSearchSubmit
   };
 };

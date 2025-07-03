@@ -11,6 +11,7 @@ import './App.css';
 import CardsReportByReasons from "./Containers/CardsReportByReasons/CardsReportByReasons.jsx";
 import CardsReportBySolution from "./Containers/CardsReportBySolution/CardsReportBySolution.jsx";
 import CardsReportByRepeatedCalls from "./Containers/CardsReportByRepeatedCalls/CardsReportByRepeatedCalls.jsx";
+import CardsReportByInactiveUsers from "./Containers/CardsReportByInactiveUsers/CardsReportByInactiveUsers.jsx";
 
 const App = () => {
   const { user } = useAppSelector(state => state.user);
@@ -28,6 +29,7 @@ const App = () => {
       <Route path='/stats_by_reasons' element={<CardsReportByReasons />} />
       <Route path='/stats_by_solutions' element={<CardsReportBySolution />} />
       <Route path='/stats_by_repeated_calls' element={<CardsReportByRepeatedCalls />} />
+      <Route path='/stats_by_inactives_users' element={<CardsReportByInactiveUsers />} />
       {user && user.role === 'admin' && adminPages()}
     </>
   );

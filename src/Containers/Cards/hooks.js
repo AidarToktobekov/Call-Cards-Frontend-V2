@@ -130,9 +130,9 @@ export const useFetchCards = () => {
   );
 
   return {
-    repeatedCalls: cards,
+    inactivesCards: cards,
     searchWord,
-    repeatedCallsLoading: cardsLoading,
+    inactivesCardsLoading: cardsLoading,
     currentPage,
     filtersState,
     handleSearchWordChange,
