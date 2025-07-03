@@ -71,14 +71,20 @@ export const useFetchFilterData = () => {
 
 export const useFetchCards = () => {
   const dispatch = useAppDispatch();
-  const [cards, setCards] = useState(null);
-  const [cardsLoading, setCardsLoading] = useState(false);
+  const [repeatedCalls, setRepeatedCalls] = useState(null);
+  const [repeatedCallsLoading, setRepeatedCallsLoading] = useState(false);
   const [filtersState, setFiltersState] = useState({
     start_date: dayjs().startOf('month'),
     end_date: dayjs().endOf('month')
   });
-  const [currentPage, setCurrentPage] = useState(1);
   const [searchWord, setSearchWord] = useState('');
+  const [currentPage, setCurrentPage] = useState(1);
+
+  const handlePageChange = (_, value = 1) => {
+    if (repeatedCallsLoading) return;
+    setCurrentPage(value);
+    void fetchCards({ ...filtersState, searchWord, currentPage: value });
+  };
 
   const handleFilterChange = (name, value) =>
     setFiltersState(prevState => ({ ...prevState, [name]: value }));
@@ -87,14 +93,8 @@ export const useFetchCards = () => {
     setSearchWord(e.target.value);
   };
 
-  const handlePageChange = (_, value = 1) => {
-    if (cardsLoading) return;
-    setCurrentPage(value);
-    void fetchCards({ ...filtersState, searchWord, currentPage: value });
-  };
-
   const onSearchSubmit = () => {
-    if (cardsLoading) return;
+    if (repeatedCallsLoading) return;
     setCurrentPage(1);
     void fetchCards({ ...filtersState, searchWord });
   };
@@ -102,6 +102,7 @@ export const useFetchCards = () => {
   const fetchCards = useCallback(
     async filtersState => {
       try {
+        setRepeatedCallsLoading(true);
         const params = {
           start_date: filtersState?.start_date?.format('YYYY-MM-DD'),
           end_date: filtersState?.end_date
@@ -111,33 +112,30 @@ export const useFetchCards = () => {
           solution: (filtersState?.solutions || []).map(
             solution => solution?.id
           ),
-          sip: (filtersState?.users || []).map(user => user?.sip),
           ls_abon: filtersState?.searchWord || '',
           page: filtersState?.currentPage || 1,
           page_size: 100
         };
-
-        setCardsLoading(true);
-        const response = await axiosApi('/cards', { params });
-        setCards(response.data);
+        const response = await axiosApi(`/cards/repeated_calls`, {params});
+        setRepeatedCalls(response.data);
       } catch (e) {
         dispatch(addSnackbar({ type: 'error', message: e.error || e.message }));
       } finally {
-        setCardsLoading(false);
+        setRepeatedCallsLoading(false);
       }
     },
     [dispatch]
   );
 
   return {
-    repeatedCalls: cards,
+    repeatedCalls,
     searchWord,
-    repeatedCallsLoading: cardsLoading,
-    currentPage,
+    repeatedCallsLoading,
     filtersState,
+    handlePageChange,
+    currentPage,
     handleSearchWordChange,
     handleFilterChange,
-    handlePageChange,
     onSearchSubmit
   };
 };
