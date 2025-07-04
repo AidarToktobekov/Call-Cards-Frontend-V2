@@ -25,7 +25,7 @@ const Sidebar = () => {
   const { user } = useAppSelector(state => state.user);
   const dispatch = useAppDispatch();
 
-  const {senior, seniorLoading, fetchSenior} = useSeniorManipulate();
+  const {senior, seniorLoading, fetchSenior, checkInSenior, checkInSeniorLoading} = useSeniorManipulate();
 
   useEffect(() => {
     if (user.role === 'senior_spec') {
@@ -34,10 +34,10 @@ const Sidebar = () => {
   })
 
   const dutyButtons = [
-    <Button key='1' color='success' disabled={!senior} loading={seniorLoading}>
+    <Button key='1' color='success' disabled={!senior} loading={seniorLoading || checkInSeniorLoading} onClick={ () =>checkInSenior({id: user?.id, checkSenior: false})}>
       Начать смену
     </Button>,
-    <Button key='2' color='error' disabled={senior} loading={seniorLoading}>
+    <Button key='2' color='error' disabled={senior} loading={seniorLoading || checkInSeniorLoading} onClick={ () =>checkInSenior({id: user?.id, checkSenior: true})}>
       Завершить смену
     </Button>
   ];

@@ -7,6 +7,7 @@ export const useSeniorManipulate = (id)=>{
   const dispatch = useAppDispatch();
   const [senior, setSenior] = useState(false);
   const [seniorLoading, setSeniorLoading] = useState(false);
+  const [checkInSeniorLoading, setCheckInSeniorLoading] = useState(false);
 
   const fetchSenior = useCallback(async () => {
     setSeniorLoading(false);
@@ -19,5 +20,20 @@ export const useSeniorManipulate = (id)=>{
     }
   }, [dispatch, id]);
 
-  return {senior, seniorLoading, fetchSenior};
+  const checkInSenior = useCallback(async ({id, checkSenior }) => {
+    setCheckInSeniorLoading(true);
+    try {
+      await axiosApi.post(
+        `/users/${id}/${checkSenior ? 'check_out' : 'check_in'}`
+      );
+
+      dispatch(addSnackbar({ type: 'success', message: checkSenior ? "Смена завершена!" : "Вы открыли смену!" }));
+    } catch (e) {
+      dispatch(addSnackbar({ type: 'error', message: (e.response.data.error || e.response.data.message) }));
+    }finally {
+      setCheckInSeniorLoading(false);
+    }
+  }, [dispatch]);
+
+  return {senior, seniorLoading, fetchSenior, checkInSenior, checkInSeniorLoading};
 }
