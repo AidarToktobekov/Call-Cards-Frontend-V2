@@ -36,6 +36,8 @@ export const useCreateSolution = () => {
     setSolutionLoading(true)
     try{
       await axiosApi.post('/actions_tree/create_solution', solutionMutation);
+
+      dispatch(addSnackbar({ type: 'success', message: "Создано новое решение!" }));
     }catch(error){
       dispatch(addSnackbar({
         type: "error",
@@ -47,4 +49,27 @@ export const useCreateSolution = () => {
   }
 
   return { solutionLoading, createSolutions };
+}
+
+export const useDeleteSolution = () => {
+  const [solutionDeleteLoading, setSolutionsDeleteLoading] = useState(false);
+  const dispatch = useAppDispatch();
+
+  const deleteSolutions = useCallback(async (id) => {
+    setSolutionsDeleteLoading(true);
+    try {
+      await axiosApi.delete(
+        `/actions_tree/solutions/${id}`
+      );
+
+      dispatch(addSnackbar({ type: 'success', message: "Решение удалено!" }));
+    } catch (e) {
+      dispatch(addSnackbar({ type: 'error', message: e.error || e.message }));
+    }finally {
+      setSolutionsDeleteLoading(false);
+    }
+  },[dispatch]);
+
+
+  return { solutionDeleteLoading, deleteSolutions };
 }

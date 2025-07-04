@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import {Button, ButtonGroup, Divider, Grid, Typography} from '@mui/material';
 import ContactPhoneIcon from '@mui/icons-material/ContactPhone';
@@ -14,15 +14,8 @@ import Modal from "../Modal/Modal.jsx";
 import MoodBadIcon from '@mui/icons-material/MoodBad';
 import InsertEmoticonIcon from '@mui/icons-material/InsertEmoticon';
 import {logout} from "../../features/user/userSlice.js";
+import {useSeniorManipulate} from "./hooks.js";
 
-const dutyButtons = [
-  <Button key='1' color='success' disabled={false}>
-    Начать смену
-  </Button>,
-  <Button key='2' color='error' disabled={true}>
-    Завершить смену
-  </Button>
-];
 
 const Sidebar = () => {
   const [openModal, setOpenModal] = useState(false);
@@ -32,19 +25,38 @@ const Sidebar = () => {
   const { user } = useAppSelector(state => state.user);
   const dispatch = useAppDispatch();
 
+  const {senior, seniorLoading, fetchSenior} = useSeniorManipulate();
+
+  useEffect(() => {
+    if (user.role === 'senior_spec') {
+      void fetchSenior(user.id);
+    }
+  })
+
+  const dutyButtons = [
+    <Button key='1' color='success' disabled={!senior} loading={seniorLoading}>
+      Начать смену
+    </Button>,
+    <Button key='2' color='error' disabled={senior} loading={seniorLoading}>
+      Завершить смену
+    </Button>
+  ];
+
   return (
     <div className='sidebar'>
       <Typography className='user-name'>
         {user?.name || ''} ({user?.sip || ''})
       </Typography>
       <div className='sidebar-navigation'>
-        <ButtonGroup
-          className='duty-button-group'
-          size='small'
-          aria-label='Small button group'
-        >
-          {dutyButtons}
-        </ButtonGroup>
+        {user.role === 'senior_spec' && (
+          <ButtonGroup
+            className='duty-button-group'
+            size='small'
+            aria-label='Small button group'
+          >
+            {dutyButtons}
+          </ButtonGroup>
+        )}
         <div className='sidebar-button-group'>
           <Typography className='sidebar-button-group-title'>Отчёты</Typography>
           <div className='sidebar-button-group-list'>

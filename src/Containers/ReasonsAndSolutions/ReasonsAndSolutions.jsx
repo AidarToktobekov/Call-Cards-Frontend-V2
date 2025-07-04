@@ -1,7 +1,11 @@
-import {Button, Divider, Grid, Paper} from "@mui/material";
+import {Button, CircularProgress, Divider, Grid, Paper, Typography} from "@mui/material";
 import React, {useEffect, useState} from "react";
-import {useFetchReasonAndSolution} from "./hooks.js";
-
+import {useDeleteReasons, useFetchReasons} from "../../hooks/reasonsHook.js";
+import {useDeleteSolution, useFetchSolutions} from "../../hooks/solutionsHook.js";
+import AddIcon from '@mui/icons-material/Add';
+import Modal from "../../Components/Modal/Modal.jsx";
+import CreateReason from "../../Components/CreateReason/CreateReason.jsx";
+import CreateSolution from "../../Components/CreateSolution/CreateSolution.jsx";
 
 const ReasonsAndSolutions = ()=>{
 
@@ -10,22 +14,17 @@ const ReasonsAndSolutions = ()=>{
     reason: true,
   });
 
-  const {
-    reasons,
-    solutions,
-    reasonsLoading,
-    solutionsLoading,
-    reasonsCreateLoading,
-    reasonsDeleteLoading,
-    solutionsDeleteLoading,
-    solutionsCreateLoading,
-    fetchReasons,
-    fetchSolutions,
-    createReason,
-    deleteReason,
-    deleteSolutions,
-    createSolution,
-  } = useFetchReasonAndSolution();
+  const {reasons, fetchReasons, reasonsLoading} = useFetchReasons();
+  const {solutions, fetchSolutions, solutionsLoading} = useFetchSolutions();
+
+  const [openModal, setOpenModal] = useState({ open: false });
+
+  const handleCloseModal = () => {
+    setOpenModal({ open: false });
+  };
+
+  const {reasonsDeleteLoading, deleteReason } = useDeleteReasons();
+  const {solutionDeleteLoading, deleteSolutions } = useDeleteSolution();
 
   useEffect(()=>{
     void fetchReasons();
@@ -41,15 +40,48 @@ const ReasonsAndSolutions = ()=>{
         }}>
            <Grid sx={{
              display: 'flex',
+             flexWrap: 'wrap',
              gap: '5px',
            }}>
+             <Button
+               startIcon={<AddIcon/>}
+               variant={"outlined"}
+               color={"error"}
+               sx={{
+                 width: "calc(40% - 5px)",
+               }}
+               onClick={()=>{
+                 setOpenModal({
+                   open: true,
+                   type: 'addReason',
+                 })
+               }}
+             >
+               Новая причина
+             </Button>
+             <Button
+               startIcon={<AddIcon/>}
+               variant={"outlined"}
+               color={"success"}
+               sx={{
+                 width: "60%",
+               }}
+               onClick={()=>{
+                 setOpenModal({
+                   open: true,
+                   type: 'addSolution',
+                 })
+               }}
+             >
+               Новое решения
+             </Button>
              <Button variant={state.reason ? "contained" : "outlined"} color={"error"}
                      sx={{
                        background: state.reason ? '#9a3029' : "transparent",
                        fontSize: '18px',
                        width: "calc(40% - 5px)",
                        opacity: state.reason ? "1" : "0.5",
-                       borderRadius: '20px 0 0  0'
+                       borderRadius: '5px 0 0  0'
              }} onClick={()=>{
                if (!state.solution && state.reason) return;
                setState({
@@ -64,7 +96,7 @@ const ReasonsAndSolutions = ()=>{
                        fontSize: '18px',
                        width: "60%",
                        opacity: state.solution ? "1" : "0.5",
-                       borderRadius: '0 20px 0 0'
+                       borderRadius: '0 5px 0 0'
              }} onClick={()=>{
                if (state.solution && !state.reason) return;
                setState({
@@ -79,7 +111,6 @@ const ReasonsAndSolutions = ()=>{
             sx={{
               display: 'flex',
               gap: state.reason && state.solution ? '5px' : "0",
-              height: 'calc(100% - 45px)',
             }}
           >
             <Grid
@@ -94,7 +125,7 @@ const ReasonsAndSolutions = ()=>{
                 border: state.reason ? '2px solid #9a3029' : 'none',
                 borderRadius: state.solution && state.reason ? '0 0 0 20px' : "0 0 20px 20px",
                 overflow: 'auto',
-                height: "calc(100vh - 169px)",
+                height: "calc(100vh - 211px)",
               }}
             >
               <table style={{
@@ -114,13 +145,43 @@ const ReasonsAndSolutions = ()=>{
                   </tr>
                 </thead>
                 <tbody>
+                {reasonsLoading && (
+                  <>
+                    <tr>
+                      <td style={{textAlign: 'center'}} colSpan={3} >
+                        <CircularProgress color={"error"}/>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td colSpan={3} style={{ padding: 0 }}>
+                        <Divider />
+                      </td>
+                    </tr>
+                  </>
+                )}
                 {(reasons || []).map(reason => (
                   <React.Fragment key={reason.id}>
                     <tr>
                       <td>{reason.id}</td>
                       <td >{reason.title}</td>
                       <td>
-                       <Button color={'error'} variant={"outlined"}>
+                       <Button
+                         loading={reasonsDeleteLoading}
+                         // onClick={async()=>{
+                         //  await deleteReason(reason.id);
+                         //  await fetchReasons();
+                         //  await fetchSolutions();
+                         //  }}
+                         onClick={()=>{
+                           setOpenModal({
+                             open: true,
+                             type: 'deleteReason',
+                             id: reason.id,
+                             text: reason.title,
+                           })
+                         }}
+                         color={'error'}
+                         variant={"outlined"}>
                          Удалить
                        </Button>
                       </td>
@@ -147,7 +208,7 @@ const ReasonsAndSolutions = ()=>{
                 border: state.solution ? '2px solid #66bb6a' : "none",
                 borderRadius: state.solution && state.reason ? '0 0 20px 0' : "0 0 20px 20px",
                 overflow: 'auto',
-                height: "calc(100vh - 169px)",
+                height: "calc(100vh - 211px)",
               }}
             >
             <table style={{
@@ -168,6 +229,20 @@ const ReasonsAndSolutions = ()=>{
               </tr>
               </thead>
               <tbody>
+              {solutionsLoading && (
+                <>
+                  <tr>
+                    <td style={{textAlign: 'center'}} colSpan={4} >
+                      <CircularProgress color={"success"}/>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td colSpan={4} style={{ padding: 0 }}>
+                      <Divider />
+                    </td>
+                  </tr>
+                </>
+              )}
               {(solutions || []).map(solution=> (
                 <React.Fragment key={solution.id}>
                   <tr>
@@ -175,7 +250,19 @@ const ReasonsAndSolutions = ()=>{
                     <td >{solution.title}</td>
                     <td >{solution.reason.title}</td>
                     <td>
-                      <Button color={'error'} variant={"outlined"}>
+                      <Button
+                        loading={solutionDeleteLoading}
+                        onClick={()=>{
+                          setOpenModal({
+                            open: true,
+                            type: 'deleteSolution',
+                            id: solution.id,
+                            text: solution.title,
+                          });
+                        }}
+                        color={'error'}
+                        variant={"outlined"}
+                      >
                         Удалить
                       </Button>
                     </td>
@@ -192,6 +279,79 @@ const ReasonsAndSolutions = ()=>{
             </Grid>
           </Grid>
         </Paper>
+        <Modal open={openModal.open} handleClose={handleCloseModal}>
+          {openModal.type === 'addReason' && (
+            <CreateReason endFunction={fetchReasons} handleClose={handleCloseModal}/>
+          )}
+          {openModal.type === 'addSolution' && (
+            <CreateSolution endFunction={fetchSolutions} handleClose={handleCloseModal}/>
+          )}
+          {openModal.type === 'deleteReason' && (
+            <Grid sx={{
+              width: '400px',
+            }}>
+              <Typography sx={{
+                fontSize: '20px',
+                textAlign: 'center',
+              }}>
+                Вы действительно хотите удалить причину - "{openModal.text}"?
+              </Typography>
+              <Grid container gap={1} padding={"10px 0 0"}>
+                <Button variant={'outlined'} color={"error"}
+                        onClick={async()=>{
+                          await deleteReason(openModal.id);
+                          await fetchReasons();
+                          await fetchSolutions();
+                          handleCloseModal();
+                        }}
+                        sx={{
+                          flexGrow: 1,
+                        }}
+                >
+                  Удалить
+                </Button>
+                <Button variant={'outlined'} color={"primary"} onClick={handleCloseModal}
+                        sx={{
+                  flexGrow: 1,
+                }}>
+                  Отмена
+                </Button>
+              </Grid>
+            </Grid>
+          )}
+          {openModal.type === 'deleteSolution' && (
+            <Grid sx={{
+              width: '400px',
+            }}>
+              <Typography sx={{
+                fontSize: '20px',
+                textAlign: 'center',
+              }}>
+                Вы действительно хотите удалить решение - "{openModal.text}"?
+              </Typography>
+              <Grid container gap={1} padding={"10px 0 0"}>
+                <Button variant={'outlined'} color={"error"}
+                        onClick={async()=>{
+                          await deleteSolutions(openModal.id);
+                          await fetchSolutions();
+                          handleCloseModal();
+                        }}
+                        sx={{
+                          flexGrow: 1,
+                        }}
+                >
+                  Удалить
+                </Button>
+                <Button variant={'outlined'} color={"primary"} onClick={handleCloseModal}
+                        sx={{
+                          flexGrow: 1,
+                        }}>
+                  Отмена
+                </Button>
+              </Grid>
+            </Grid>
+          )}
+        </Modal>
       </div>
     </>
   );

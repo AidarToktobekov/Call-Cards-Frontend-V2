@@ -35,6 +35,8 @@ export const useCreateReasons = () => {
     setReasonLoading(true)
     try{
       await axiosApi.post('/actions_tree/create_reason', reasonMutation);
+
+      dispatch(addSnackbar({ type: 'success', message: "Причина создана!" }));
     }catch(error){
       dispatch(addSnackbar({
         type: "error",
@@ -46,4 +48,26 @@ export const useCreateReasons = () => {
   }
 
   return { reasonLoading, createReasons };
+}
+
+export const useDeleteReasons = () => {
+  const [ reasonsDeleteLoading, setReasonsDeleteLoading ] = useState(false);
+  const dispatch = useAppDispatch();
+
+  const deleteReason = useCallback(async (id) => {
+    setReasonsDeleteLoading(true);
+    try {
+      await axiosApi.delete(
+        `/actions_tree/reasons/${id}`
+      );
+
+      dispatch(addSnackbar({ type: 'success', message: "Причина удалена!" }));
+    } catch (e) {
+      dispatch(addSnackbar({ type: 'error', message: e.response.data.error || e.response.data.message }));
+    }finally {
+      setReasonsDeleteLoading(false);
+    }
+  },[dispatch]);
+
+  return { reasonsDeleteLoading, deleteReason };
 }

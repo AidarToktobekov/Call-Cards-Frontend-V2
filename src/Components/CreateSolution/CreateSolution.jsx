@@ -3,7 +3,7 @@ import {useEffect, useState} from "react";
 import {useCreateSolution} from "../../hooks/solutionsHook.js";
 import {useFetchReasons} from "../../hooks/reasonsHook.js";
 
-const CreateSolution = () => {
+const CreateSolution = ({endFunction, handleClose}) => {
   const [state, setState] = useState({
     title: '',
     reason_id: '',
@@ -35,6 +35,8 @@ const CreateSolution = () => {
       title: '',
       reason_id: '',
     });
+    void endFunction();
+    handleClose();
   }
 
   return(
@@ -64,7 +66,7 @@ const CreateSolution = () => {
             value={state.reason_id}
             sx={{
               width: '100%',
-              mb: 2
+              mb: 2,
             }}
             onChange={inputChangeHandler}
           >

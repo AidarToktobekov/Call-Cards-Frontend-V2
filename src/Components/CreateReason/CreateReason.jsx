@@ -2,7 +2,7 @@ import {Button, Grid, TextField, Typography} from "@mui/material";
 import {useState} from "react";
 import {useCreateReasons} from "../../hooks/reasonsHook.js";
 
-const CreateReason = () => {
+const CreateReason = ({handleClose, endFunction}) => {
   const [reasonTitle, setReasonTitle] = useState('');
   const { reasonLoading, createReasons } = useCreateReasons();
 
@@ -13,6 +13,8 @@ const CreateReason = () => {
       title: reasonTitle.trim(),
     });
     setReasonTitle('');
+    void endFunction();
+    handleClose();
   }
 
   return(
