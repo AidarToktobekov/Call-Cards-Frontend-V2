@@ -7,6 +7,9 @@ const ListTableHeader = () => {
       <tr>
         <th style={{ minWidth: '140px', textAlign: 'center' }}>ЛС абонента</th>
         <th style={{ minWidth: '140px', textAlign: 'center' }}>Адрес</th>
+        <th style={{ textAlign: 'center', minWidth: '120px' }}>
+          СИП
+        </th>
         <th style={{ textAlign: 'center', minWidth: '260px' }}>
           Номер телефона
         </th>

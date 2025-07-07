@@ -68,7 +68,7 @@ const PopoverContent = ({
           getOptionLabel={option => option.title}
           getOptionKey={option => option.id}
           loadingText={"Терпение сделай..."}
-          noOptionsText={"Ты может причину выбереш?"}
+          noOptionsText={"Выберите причину?"}
           renderInput={params => (
             <TextField
               {...params}

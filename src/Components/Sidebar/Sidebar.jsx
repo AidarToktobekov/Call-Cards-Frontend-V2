@@ -26,18 +26,18 @@ const Sidebar = () => {
   const dispatch = useAppDispatch();
 
   const {senior, seniorLoading, fetchSenior, checkInSenior, checkInSeniorLoading} = useSeniorManipulate();
-
+  
   useEffect(() => {
     if (user.role === 'senior_spec') {
       void fetchSenior(user.id);
     }
-  })
+  }, [fetchSenior, user.id, user.role])
 
   const dutyButtons = [
-    <Button key='1' color='success' disabled={!senior} loading={seniorLoading || checkInSeniorLoading} onClick={ () =>checkInSenior({id: user?.id, checkSenior: false})}>
+    <Button key='1' color='success' disabled={senior} loading={seniorLoading || checkInSeniorLoading} onClick={ () =>checkInSenior({id: user?.id, checkSenior: false})}>
       Начать смену
     </Button>,
-    <Button key='2' color='error' disabled={senior} loading={seniorLoading || checkInSeniorLoading} onClick={ () =>checkInSenior({id: user?.id, checkSenior: true})}>
+    <Button key='2' color='error' disabled={!senior} loading={seniorLoading || checkInSeniorLoading} onClick={ () =>checkInSenior({id: user?.id, checkSenior: true})}>
       Завершить смену
     </Button>
   ];
@@ -117,29 +117,31 @@ const Sidebar = () => {
           </div>
         </div>
         <Divider />
-        <div className='sidebar-button-group'>
-          <Typography className='sidebar-button-group-title'>
-            Управление
-          </Typography>
-          <div className='sidebar-button-group-list'>
-            <Button
-              className={`sidebar-nav-btn ${pathname === '/solution-and-reason' ? 'nav-button-active' : 'nav-button-inactive'}`}
-              variant='text'
-              size='large'
-              href='/actions_tree'
-            >
-              Причины / Решения
-            </Button>
-            <Button
-              className={`sidebar-nav-btn ${pathname === '/employees' ? 'nav-button-active' : 'nav-button-inactive'}`}
-              variant='text'
-              size='large'
-              href='/employees'
-            >
-              Сотрудники
-            </Button>
+        {user.role === 'admin' && (
+          <div className='sidebar-button-group'>
+            <Typography className='sidebar-button-group-title'>
+              Управление
+            </Typography>
+            <div className='sidebar-button-group-list'>
+              <Button
+                className={`sidebar-nav-btn ${pathname === '/solution-and-reason' ? 'nav-button-active' : 'nav-button-inactive'}`}
+                variant='text'
+                size='large'
+                href='/actions_tree'
+              >
+                Причины / Решения
+              </Button>
+              <Button
+                className={`sidebar-nav-btn ${pathname === '/employees' ? 'nav-button-active' : 'nav-button-inactive'}`}
+                variant='text'
+                size='large'
+                href='/employees'
+              >
+                Сотрудники
+              </Button>
+            </div>
           </div>
-        </div>
+        )}
         <Button
           className='sidebar-nav-btn'
           variant='text'

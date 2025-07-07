@@ -1,5 +1,5 @@
 import React, { memo } from 'react';
-import { Chip, Divider } from '@mui/material';
+import {Chip, Divider, Grid} from '@mui/material';
 import { copyToClipboard } from '../../../../utils.js';
 
 const ListTableBody = ({ cards }) => (
@@ -8,7 +8,20 @@ const ListTableBody = ({ cards }) => (
       <React.Fragment key={i}>
         <tr>
           <td style={{ textAlign: 'center' }}>{card.ls_abon}</td>
-          <td style={{ textAlign: 'center' }}>{card.address}</td>
+          <td>{card.address}</td>
+          <td style={{ maxWidth: '320px', textAlign: 'center' }}>
+            <Grid sx={{
+              display: 'flex',
+              gap: '4px',
+            }}>
+              {card.sip.map((sip, i) => (
+                <Chip
+                  key={`${sip}${i}`}
+                  label={sip}
+                />
+              ))}
+            </Grid>
+          </td>
           <td style={{ maxWidth: '320px', textAlign: 'center' }}>
             <div
               style={{

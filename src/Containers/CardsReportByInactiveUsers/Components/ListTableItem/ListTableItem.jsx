@@ -1,4 +1,4 @@
-import {Button, Chip, CircularProgress, Divider, Grid, IconButton, Typography} from "@mui/material";
+import {Chip, Divider, Grid, IconButton, Typography} from "@mui/material";
 import {copyToClipboard} from "../../../../utils.js";
 import Modal from "../../../../Components/Modal/Modal.jsx";
 import React, {useCallback, useState} from "react";
@@ -22,6 +22,7 @@ const ListTableItem = ({card}) => {
       <tr>
         <td style={{ textAlign: 'center' }}>{card?.id}</td>
         <td style={{ maxWidth: '240px' }}>{card?.full_name}</td>
+        <td style={{ minWidth: '240px' }}>{card?.address}</td>
         <td style={{ textAlign: 'center' }}>
           {card.call_from ? (
             <Chip
@@ -69,7 +70,7 @@ const ListTableItem = ({card}) => {
         </td>
       </tr>
       <tr>
-        <td colSpan={12} style={{ padding: 0 }}>
+        <td colSpan={13} style={{ padding: 0 }}>
           <Divider />
         </td>
       </tr>

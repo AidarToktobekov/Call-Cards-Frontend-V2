@@ -26,6 +26,7 @@ const CardsReportByRepeatedCalls = () => {
         <ListHeader
           filtersState={filtersState}
           searchWord={searchWord}
+          cards={repeatedCalls}
           cardsLoading={repeatedCallsLoading}
           handleSearchWordChange={handleSearchWordChange}
           onSearchSubmit={onSearchSubmit}

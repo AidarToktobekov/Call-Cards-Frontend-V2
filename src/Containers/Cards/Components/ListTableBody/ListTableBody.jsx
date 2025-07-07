@@ -9,6 +9,7 @@ const ListTableBody = ({ cards }) => (
         <tr>
           <td style={{ textAlign: 'center' }}>{card.id}</td>
           <td style={{ maxWidth: '240px' }}>{card.full_name}</td>
+          <td style={{ minWidth: '240px' }}>{card.address}</td>
           <td style={{ textAlign: 'center' }}>
             {card.call_from ? (
               <Chip
@@ -49,7 +50,7 @@ const ListTableBody = ({ cards }) => (
           </td>
         </tr>
         <tr>
-          <td colSpan={11} style={{ padding: 0 }}>
+          <td colSpan={12} style={{ padding: 0 }}>
             <Divider />
           </td>
         </tr>

@@ -7,6 +7,7 @@ const ListTableHeader = () => {
       <tr>
         <th style={{ minWidth: '30px', textAlign: 'center' }}>ID</th>
         <th>ФИО</th>
+        <th>Адрес</th>
         <th style={{ minWidth: '120px' }}>Звонок от</th>
         <th style={{ minWidth: '140px', textAlign: 'center' }}>ЛС абонента</th>
         <th style={{ textAlign: 'center', minWidth: '260px' }}>
@@ -24,7 +25,7 @@ const ListTableHeader = () => {
         <th>Комментарий</th>
       </tr>
       <tr>
-        <td colSpan={11} style={{ padding: 0 }}>
+        <td colSpan={12} style={{ padding: 0 }}>
           <Divider />
         </td>
       </tr>

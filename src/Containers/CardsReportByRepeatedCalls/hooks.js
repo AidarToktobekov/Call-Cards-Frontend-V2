@@ -150,6 +150,7 @@ export const useFetchCards = () => {
         Адресс: item.address,
         Личный_счет: item.ls_abon,
         Тел_Номер: item.phone_number.join(', '),
+        Сипы: item.sip.join(', '),
         Причина: item.reason.title,
         Решение: item.solution?.title || '',
         Кол_во: item.count,
@@ -165,9 +166,9 @@ export const useFetchCards = () => {
   }
 
   return {
-    inactivesCards: repeatedCalls,
+    repeatedCalls,
     searchWord,
-    inactivesCardsLoading: repeatedCallsLoading,
+    repeatedCallsLoading,
     filtersState,
     handlePageChange,
     currentPage,
