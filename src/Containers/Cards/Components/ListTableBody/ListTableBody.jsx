@@ -9,7 +9,7 @@ const ListTableBody = ({ cards }) => (
         <tr>
           <td style={{ textAlign: 'center' }}>{card.id}</td>
           <td style={{ maxWidth: '240px' }}>{card.full_name}</td>
-          <td style={{ minWidth: '240px' }}>{card.address}</td>
+          <td style={{ maxWidth: '240px' }}>{card.address}</td>
           <td style={{ textAlign: 'center' }}>
             {card.call_from ? (
               <Chip

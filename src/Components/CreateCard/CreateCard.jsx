@@ -12,15 +12,15 @@ import {memo, useEffect, useState} from 'react';
 import {useAppDispatch, useAppSelector} from '../../app/hooks.js';
 import {useFetchReasons} from "../../hooks/reasonsHook.js";
 import {useFetchSolutions} from "../../hooks/solutionsHook.js";
-import {useCreateCards} from "../../hooks/cardsHook.js";
-import {useFetchClient} from "../../hooks/clientsHook.js";
 import {addSnackbar} from "../../features/notifications/notificationsSlice.js";
+import {useFetchClient} from "../ContentHeader/hooks.js";
+import {useCreateCards} from "./hooks.js";
 
 const CreateCard = ({client, handleClose}) => {
   const user = useAppSelector(state => state.user.user);
   const {reasons, reasonsLoading, fetchReasons} = useFetchReasons();
   const {solutions, solutionsLoading, fetchSolutions} = useFetchSolutions();
-  const {  cardLoading, createCards } = useCreateCards();
+  const {cardLoading, createCards } = useCreateCards();
   const { resetClient} = useFetchClient();
   const [modalClient, setModalClient] = useState(client);
   const dispatch = useAppDispatch();
