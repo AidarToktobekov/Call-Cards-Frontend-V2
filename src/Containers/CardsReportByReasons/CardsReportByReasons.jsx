@@ -12,6 +12,8 @@ const CardsReportByReasons = () => {
     handleFilterChange,
     onSearchSubmit,
     filtersState,
+    exportCards,
+    exportLoading
   } = useFetchCardsReportByReasons();
 
   return (
@@ -22,6 +24,8 @@ const CardsReportByReasons = () => {
           onSearchSubmit={onSearchSubmit}
           handleFilterChange={handleFilterChange}
           filtersState={filtersState}
+          exportCards={exportCards}
+          exportCardsLoading={exportLoading}
         />
         <ItemsList
           cards={cardsReportByReasons}

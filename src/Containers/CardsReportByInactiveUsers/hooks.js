@@ -3,6 +3,7 @@ import axiosApi from '../../axiosApi.js';
 import { useAppDispatch } from '../../app/hooks.js';
 import { addSnackbar } from '../../features/notifications/notificationsSlice.js';
 import dayjs from 'dayjs';
+import {exportToExcel} from "../../excelExporter.jsx";
 
 export const useFetchFilterData = () => {
   const dispatch = useAppDispatch();
@@ -73,6 +74,7 @@ export const useFetchCards = () => {
   const dispatch = useAppDispatch();
   const [inactivesCards, setInactivesCards] = useState(null);
   const [inactivesCardsLoading, setInactivesCardsLoading] = useState(false);
+  const [exportLoading, setExportLoading] = useState(false);
   const [filtersState, setFiltersState] = useState({
     start_date: dayjs().startOf('month'),
     end_date: dayjs().endOf('month')
@@ -129,6 +131,55 @@ export const useFetchCards = () => {
     [dispatch]
   );
 
+  const exportCards = async () => {
+    setExportLoading(true);
+
+    try {
+      const params = {
+        start_date: filtersState?.start_date?.format('YYYY-MM-DD'),
+        end_date: filtersState?.end_date
+          ? filtersState.end_date.add(1, 'day').format('YYYY-MM-DD')
+          : filtersState?.end_date,
+        reason: (filtersState?.reasons || []).map(reason => reason?.id),
+        solution: (filtersState?.solutions || []).map(
+          solution => solution?.id
+        ),
+        sip: (filtersState?.users || []).map(user => user?.sip),
+        ls_abon: filtersState?.searchWord || '',
+        page_size: 100000000,
+      };
+
+      const {data: list} = await axiosApi('/cards/inactives', { params });
+      const listCards = list.map((item) => ({
+        Айди_Аккаунта: item.account_id,
+        Вызов_От: item.call_from,
+        Комментарий: item.comment,
+        Дата_Создания: item.created_at,
+        ФИО: item.full_name,
+        ID: item.id,
+        ip_address: item.ip_address || '',
+        ip_olt: item.ip_olt || '',
+        mac_address: item.mac_address || '',
+        mac_onu: item.mac_onu || '',
+        n_result_id: item.n_result_id || '',
+        Адресс: item.address,
+        Личный_счет: item.ls_abon,
+        Тел_Номер: item.phone_number.join(', '),
+        Причина: item.reason.title,
+        Решение: item.solution?.title || '',
+        Сип: item.sip,
+      }));
+
+      exportToExcel(listCards, "Отчет_по_неактивным");
+
+    } catch (e) {
+      dispatch(addSnackbar({ type: 'error', message: e.response.data.error || e.response.data.message }));
+    } finally {
+      setExportLoading(false);
+    }
+  }
+
+
   return {
     inactivesCards,
     searchWord,
@@ -138,7 +189,9 @@ export const useFetchCards = () => {
     handleSearchWordChange,
     handleFilterChange,
     handlePageChange,
-    onSearchSubmit
+    onSearchSubmit,
+    exportLoading,
+    exportCards
   };
 };
 

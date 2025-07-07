@@ -1,9 +1,10 @@
-import {Button, Chip, CircularProgress, Divider, Grid, Typography} from "@mui/material";
+import {Button, Chip, CircularProgress, Divider, Grid, IconButton, Typography} from "@mui/material";
 import {copyToClipboard} from "../../../../utils.js";
 import Modal from "../../../../Components/Modal/Modal.jsx";
 import React, {useCallback, useState} from "react";
 import {useFetchLastPay} from "../../hooks.js";
 import dayjs from "dayjs";
+import CreditScoreIcon from '@mui/icons-material/CreditScore';
 
 const ListTableItem = ({card}) => {
 
@@ -11,9 +12,9 @@ const ListTableItem = ({card}) => {
   const [open, setOpen] = useState(false);
   const handleClose = ()=> setOpen(false);
 
-  const showLastPay = useCallback(() => {
+  const showLastPay = useCallback(async () => {
+    await fetchLastPay(card.ls_abon);
     setOpen(true);
-    void fetchLastPay(card.ls_abon);
   },[fetchLastPay, card.ls_abon]);
 
   return(
@@ -59,12 +60,12 @@ const ListTableItem = ({card}) => {
         <td style={{ minWidth: '180px', maxWidth: '270px' }}>
           {card?.comment}
         </td>
-        <td style={{ minWidth: '180px', maxWidth: '270px' }}>
-          <Button loading={lastPayLoading} onClick={()=> {
+        <td style={{ minWidth: '180px', maxWidth: '270px', textAlign: 'center' }}>
+          <IconButton loading={lastPayLoading} onClick={()=> {
             showLastPay(card?.ls_abon)
-          }} variant="contained" color="primary" size="small">
-            Смотреть
-          </Button>
+          }} color="warning" size="small">
+            <CreditScoreIcon/>
+          </IconButton>
         </td>
       </tr>
       <tr>
@@ -83,10 +84,10 @@ const ListTableItem = ({card}) => {
           </Typography>
           <Grid sx={{
             fontSize: "18px",
-            fontFamily: "sans-sarif",
+            fontFamily: "sans-serif",
             mb: 1,
             display: 'flex',
-            minHeight: '30px',
+            minHeight: '40px',
             border: '2px solid #006993',
             borderRadius: '5px',
             overflow: 'hidden',
@@ -111,7 +112,7 @@ const ListTableItem = ({card}) => {
               alignItems: 'center',
               background: '#006993',
             }}>
-              {lastPayLoading ? <CircularProgress/> : lastPay?.service}
+              {lastPay?.service}
             </Grid>
           </Grid>
           <Grid sx={{
@@ -119,7 +120,7 @@ const ListTableItem = ({card}) => {
             fontFamily: "sans-sarif",
             mb: 1,
             display: 'flex',
-            minHeight: '30px',
+            minHeight: '40px',
             border: '2px solid #006993',
             borderRadius: '5px',
             overflow: 'hidden',
@@ -144,7 +145,7 @@ const ListTableItem = ({card}) => {
               alignItems: 'center',
               background: '#006993',
             }}>
-              {lastPayLoading ? <CircularProgress/> : dayjs(lastPay?.date).format('DD.MM.YYYY')}
+              {dayjs(lastPay?.date).format('DD.MM.YYYY')}
             </Grid>
           </Grid>
           <Grid sx={{
@@ -152,7 +153,7 @@ const ListTableItem = ({card}) => {
             fontFamily: "sans-sarif",
             mb: 1,
             display: 'flex',
-            minHeight: '30px',
+            minHeight: '40px',
             border: '2px solid #006993',
             borderRadius: '5px',
             overflow: 'hidden',
@@ -177,7 +178,7 @@ const ListTableItem = ({card}) => {
               alignItems: 'center',
               background: '#006993',
             }}>
-              {lastPayLoading ? <CircularProgress/> : lastPay?.sum + "kgz"}
+              {lastPay?.sum} <span style={{textDecoration: 'underline'}}>c</span>
             </Grid>
           </Grid>
         </Grid>

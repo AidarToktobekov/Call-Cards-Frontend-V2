@@ -11,7 +11,9 @@ const CardsReportByEmployees = () => {
     cardsByEmployees,
     cardsByEmployeesLoading,
     onSearchSubmit,
-    handleFilterChange
+    handleFilterChange,
+    exportLoading,
+    exportCards
   } = useFetchCardsByEmployees();
 
   return (
@@ -22,6 +24,8 @@ const CardsReportByEmployees = () => {
           listLoading={cardsByEmployeesLoading}
           onSearchSubmit={onSearchSubmit}
           handleFilterChange={handleFilterChange}
+          exportCards={exportCards}
+          exportCardsLoading={exportLoading}
         />
         <ItemsList
           list={cardsByEmployees}

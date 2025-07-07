@@ -15,7 +15,9 @@ const CardsReportByInactiveUsers = () => {
     handleSearchWordChange,
     onSearchSubmit,
     handlePageChange,
-    handleFilterChange
+    handleFilterChange,
+    exportCards,
+    exportLoading
   } = useFetchCards();
 
   return (
@@ -28,6 +30,8 @@ const CardsReportByInactiveUsers = () => {
           handleSearchWordChange={handleSearchWordChange}
           onSearchSubmit={onSearchSubmit}
           handleFilterChange={handleFilterChange}
+          exportCards={exportCards}
+          exportCardsLoading={exportLoading}
         />
         <ItemsList
           cards={inactivesCards}

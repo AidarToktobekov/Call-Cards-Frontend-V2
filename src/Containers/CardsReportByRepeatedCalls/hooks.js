@@ -3,6 +3,7 @@ import axiosApi from '../../axiosApi.js';
 import { useAppDispatch } from '../../app/hooks.js';
 import { addSnackbar } from '../../features/notifications/notificationsSlice.js';
 import dayjs from 'dayjs';
+import {exportToExcel} from "../../excelExporter.jsx";
 
 export const useFetchFilterData = () => {
   const dispatch = useAppDispatch();
@@ -73,6 +74,7 @@ export const useFetchCards = () => {
   const dispatch = useAppDispatch();
   const [repeatedCalls, setRepeatedCalls] = useState(null);
   const [repeatedCallsLoading, setRepeatedCallsLoading] = useState(false);
+  const [exportLoading, setExportLoading] = useState(false);
   const [filtersState, setFiltersState] = useState({
     start_date: dayjs().startOf('month'),
     end_date: dayjs().endOf('month')
@@ -127,6 +129,41 @@ export const useFetchCards = () => {
     [dispatch]
   );
 
+  const exportCards = async () => {
+    setExportLoading(true);
+
+    try {
+      const params = {
+        start_date: filtersState?.start_date?.format('YYYY-MM-DD'),
+        end_date: filtersState?.end_date
+          ? filtersState.end_date.add(1, 'day').format('YYYY-MM-DD')
+          : filtersState?.end_date,
+        reason: (filtersState?.reasons || []).map(reason => reason?.id),
+        solution: (filtersState?.solutions || []).map(
+          solution => solution?.id
+        ),
+        ls_abon: filtersState?.searchWord || '',
+        page_size: 100000000
+      };
+      const {data: res} = await axiosApi(`/cards/repeated_calls`, {params});
+      const listCards = res.result.map((item) => ({
+        Адресс: item.address,
+        Личный_счет: item.ls_abon,
+        Тел_Номер: item.phone_number.join(', '),
+        Причина: item.reason.title,
+        Решение: item.solution?.title || '',
+        Кол_во: item.count,
+      }));
+
+      exportToExcel(listCards, "Отчет_по_повторным_звонкам");
+
+    } catch (e) {
+      dispatch(addSnackbar({ type: 'error', message: e.response.data.error || e.response.data.message }));
+    } finally {
+      setExportLoading(false);
+    }
+  }
+
   return {
     inactivesCards: repeatedCalls,
     searchWord,
@@ -136,6 +173,8 @@ export const useFetchCards = () => {
     currentPage,
     handleSearchWordChange,
     handleFilterChange,
-    onSearchSubmit
+    onSearchSubmit,
+    exportLoading,
+    exportCards
   };
 };

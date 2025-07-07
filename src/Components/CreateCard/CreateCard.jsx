@@ -16,7 +16,7 @@ import {useCreateCards} from "../../hooks/cardsHook.js";
 import {useFetchClient} from "../../hooks/clientsHook.js";
 import {addSnackbar} from "../../features/notifications/notificationsSlice.js";
 
-const CreateCard = ({client}) => {
+const CreateCard = ({client, handleClose}) => {
   const user = useAppSelector(state => state.user.user);
   const {reasons, reasonsLoading, fetchReasons} = useFetchReasons();
   const {solutions, solutionsLoading, fetchSolutions} = useFetchSolutions();
@@ -109,6 +109,7 @@ const CreateCard = ({client}) => {
       await createCards(cardMutation);
       await setModalClient(null);
       await resetClient();
+      handleClose();
     } else {
       dispatch(addSnackbar({
         type: "error",

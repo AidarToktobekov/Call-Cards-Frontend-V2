@@ -12,6 +12,8 @@ const CardsReportBySolution = () => {
     handleFilterChange,
     onSearchSubmit,
     filtersState,
+    exportLoading,
+    exportCards
   } = useFetchCardsReportBySolutions();
 
   return (
@@ -22,6 +24,8 @@ const CardsReportBySolution = () => {
           onSearchSubmit={onSearchSubmit}
           handleFilterChange={handleFilterChange}
           filtersState={filtersState}
+          exportCards={exportCards}
+          exportCardsLoading={exportLoading}
         />
         <ItemsList
           cards={cardsReportBySolutions}

@@ -51,7 +51,7 @@ const ContentHeader = () => {
       </Button>
 
       <Modal open={openModal.open} handleClose={handleCloseModal}>
-        <CreateCard client={openModal?.client} />
+        <CreateCard client={openModal?.client} handleClose={handleCloseModal}/>
       </Modal>
 
       <Popover

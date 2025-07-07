@@ -16,6 +16,12 @@ export const useCreateCards = () => {
           type: "success",
           message: "Карточка успешно создана!",
         }))
+        if(card.data?.setCreditRes?.error){
+          dispatch(addSnackbar({
+            type: "error",
+            message: card.data?.setCreditRes?.error,
+          }))
+        }
       }
       return card;
     } catch (error) {

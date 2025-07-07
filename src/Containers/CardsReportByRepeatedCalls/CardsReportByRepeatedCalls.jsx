@@ -15,7 +15,9 @@ const CardsReportByRepeatedCalls = () => {
     handleSearchWordChange,
     onSearchSubmit,
     handlePageChange,
-    handleFilterChange
+    handleFilterChange,
+    exportCards,
+    exportLoading,
   } = useFetchCards();
 
   return (
@@ -28,6 +30,8 @@ const CardsReportByRepeatedCalls = () => {
           handleSearchWordChange={handleSearchWordChange}
           onSearchSubmit={onSearchSubmit}
           handleFilterChange={handleFilterChange}
+          exportCards={exportCards}
+          exportCardsLoading={exportLoading}
         />
         <ItemsList
           cards={repeatedCalls}

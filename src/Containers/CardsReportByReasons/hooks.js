@@ -3,12 +3,14 @@ import axiosApi from "../../axiosApi.js";
 import {addSnackbar} from "../../features/notifications/notificationsSlice.js";
 import {useAppDispatch} from "../../app/hooks.js";
 import dayjs from "dayjs";
+import {exportToExcel} from "../../excelExporter.jsx";
 
 export const useFetchCardsReportByReasons = () => {
 
   const [cardsReportByReasons, setCardsReportByReasons] = useState([]);
   const [cardsReportByReasonsLoading, setCardsReportByReasonsLoading] = useState(false);
   const dispatch = useAppDispatch();
+  const [exportLoading, setExportLoading] = useState(false);
   const [filtersState, setFiltersState] = useState({
     start_date: dayjs().startOf('month'),
     end_date: dayjs().endOf('month')
@@ -56,11 +58,40 @@ export const useFetchCardsReportByReasons = () => {
     }
   }, [dispatch]);
 
+  const exportCards = async () => {
+    setExportLoading(true);
+    try {
+      const date = {
+        start_date: filtersState?.start_date?.format('YYYY-MM-DD'),
+        end_date: filtersState?.end_date
+          ? filtersState.end_date.add(1, 'day').format('YYYY-MM-DD')
+          : filtersState?.end_date,
+      };
+      const { data: cardsReportByReasons } = await axiosApi.get(
+        `/cards/stats_by_reason${date?.start_date && date?.start_date ? `?start_date=${date.start_date}&end_date=${date.end_date}` : ''}`
+      );
+      const listCards = cardsReportByReasons.map((item) => ({
+        Причина: item.reason,
+        Кол_во: item.count,
+      }));
+
+      exportToExcel(listCards, "Отчет_по_причинам");
+
+    } catch (e) {
+      dispatch(addSnackbar({ type: 'error', message: e.response.data.error || e.response.data.message }));
+    } finally {
+      setExportLoading(false);
+    }
+  }
+
+
   return {
     cardsReportBySolutions: cardsReportByReasons,
     cardsReportBySolutionsLoading: cardsReportByReasonsLoading,
     filtersState,
     handleFilterChange,
-    onSearchSubmit
+    onSearchSubmit,
+    exportLoading,
+    exportCards
   }
 };
