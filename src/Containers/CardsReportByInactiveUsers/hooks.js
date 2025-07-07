@@ -141,3 +141,26 @@ export const useFetchCards = () => {
     onSearchSubmit
   };
 };
+
+export const useFetchLastPay = () => {
+  const [lastPay, setLastPay] = useState(null);
+  const [lastPayLoading, setLastPayLoading] = useState(false);
+  const dispatch = useAppDispatch();
+
+  const fetchLastPay = useCallback(async(ls_abon)=>{
+    setLastPayLoading(true);
+    try {
+      const { data: res } = await axiosApi(`/cards/get_last_pay/${ls_abon}`);
+      setLastPay(res.last_pay);
+    } catch (e) {
+      dispatch(addSnackbar({
+        type: 'error',
+        message: e.reasons.data.error || e.reasons.data.message || "Ошибка при получение последнего платежа!"
+      }));
+    } finally {
+      setLastPayLoading(false);
+    }
+  }, [dispatch]);
+
+  return { lastPay, lastPayLoading, fetchLastPay }
+}

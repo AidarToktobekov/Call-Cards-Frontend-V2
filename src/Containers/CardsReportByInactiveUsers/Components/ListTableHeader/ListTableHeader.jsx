@@ -22,9 +22,10 @@ const ListTableHeader = () => {
         <th style={{ textAlign: 'center' }}>СИП</th>
         <th>Старший смены</th>
         <th>Комментарий</th>
+        <th>Дата последнего платежа</th>
       </tr>
       <tr>
-        <td colSpan={11} style={{ padding: 0 }}>
+        <td colSpan={12} style={{ padding: 0 }}>
           <Divider />
         </td>
       </tr>

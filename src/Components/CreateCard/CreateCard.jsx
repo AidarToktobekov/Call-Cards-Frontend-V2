@@ -104,6 +104,7 @@ const CreateCard = ({client}) => {
         mac_onu: modalClient?.mac_onu,
         account_id: `${modalClient?.account_id}`,
         n_result_id: `${modalClient?.n_result_id}`,
+        set_credit: !!modalClient?.credit,
       };
       await createCards(cardMutation);
       await setModalClient(null);
@@ -130,7 +131,7 @@ const CreateCard = ({client}) => {
           width: '100%',
           maxWidth: '1000px',
           minWidth: '600px',
-          maxHeight: '620px',
+          maxHeight: '640px',
           overflowY: 'auto',
           padding: '10px',
           display: "grid",
@@ -144,6 +145,7 @@ const CreateCard = ({client}) => {
             'call_from save_call_from'
             'reason solution'
             'comment comment'
+            'credit credit'
             'button button'
            ` : `
             'full_name full_name'
@@ -272,6 +274,28 @@ const CreateCard = ({client}) => {
                       }
                   />
                 } label="Сохранить в Гидре номер с которого звонили" labelPlacement="end"/>
+          )}
+          {client?.ls_abon && (
+            <FormControlLabel
+              sx={{
+                gridArea: "credit",
+                justifyContent: 'center',
+              }}
+              value="end"
+              control={
+                <Switch
+                  checked={!!modalClient?.credit}
+                  color="primary"
+                  onChange={(_, value) =>
+                    inputChangeHandler({
+                      target: {
+                        name: 'credit',
+                        value,
+                      },
+                    })
+                  }
+                />
+              } label="Выдать кредит?" labelPlacement="end"/>
           )}
           <Autocomplete
               fullWidth
