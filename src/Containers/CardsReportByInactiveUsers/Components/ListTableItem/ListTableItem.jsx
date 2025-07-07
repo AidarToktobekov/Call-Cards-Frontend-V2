@@ -118,7 +118,7 @@ const ListTableItem = ({card}) => {
           </Grid>
           <Grid sx={{
             fontSize: "18px",
-            fontFamily: "sans-sarif",
+            fontFamily: "sans-serif",
             mb: 1,
             display: 'flex',
             minHeight: '40px',
@@ -151,7 +151,7 @@ const ListTableItem = ({card}) => {
           </Grid>
           <Grid sx={{
             fontSize: "18px",
-            fontFamily: "sans-sarif",
+            fontFamily: "sans-serif",
             mb: 1,
             display: 'flex',
             minHeight: '40px',
