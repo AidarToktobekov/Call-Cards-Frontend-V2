@@ -47,10 +47,10 @@ const CreateSolution = ({endFunction, handleClose}) => {
           fontSize: '26px',
           my: 2,
         }}>
-          Создать причину
+          Создать решение
         </Typography>
         <Grid component={'form'} onSubmit={handleSubmit}>
-          <TextField label={"Причина"} value={state.title} type={"text"} sx={{
+          <TextField label={"Решение"} value={state.title} type={"text"} sx={{
             mb: 2
           }} variant={"outlined"} fullWidth onChange={(e) => setState(prev=>({
             ...prev,
