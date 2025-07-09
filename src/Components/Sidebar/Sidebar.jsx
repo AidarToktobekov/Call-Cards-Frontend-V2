@@ -17,13 +17,22 @@ import {logout} from "../../features/user/userSlice.js";
 import {useSeniorManipulate} from "./hooks.js";
 
 
-const Sidebar = () => {
+const Sidebar = ({visible, setVisible}) => {
   const [openModal, setOpenModal] = useState(false);
   const handleClose = () => setOpenModal(false);
   const { pathname } = useLocation();
   const navigate = useNavigate();
   const { user } = useAppSelector(state => state.user);
   const dispatch = useAppDispatch();
+  const [shouldRender, setShouldRender] = useState(false);
+
+  useEffect(() => {
+    if(visible){
+      setTimeout(() => setShouldRender(true), 200);
+    } else {
+      setTimeout(() => setShouldRender(false), 200);
+    }
+  }, [visible]);
 
   const {senior, seniorLoading, fetchSenior, checkInSenior, checkInSeniorLoading} = useSeniorManipulate();
   
@@ -43,67 +52,79 @@ const Sidebar = () => {
   ];
 
   return (
-    <div className='sidebar'>
-      <Typography className='user-name'>
+    <div className={`sidebar open-${visible}`} onMouseEnter={()=>setVisible(true)} onMouseLeave={()=>setVisible(false)}>
+     <Grid sx={{
+       minHeight: '50px',
+       padding: "10px 0"
+     }}>
+      <Typography className={`user-name opacity-${visible} display-${shouldRender}`}>
         {user?.name || ''} ({user?.sip || ''})
       </Typography>
+     </Grid>
       <div className='sidebar-navigation'>
-        {user.role === 'senior_spec' && (
-          <ButtonGroup
-            className='duty-button-group'
-            size='small'
-            aria-label='Small button group'
-          >
-            {dutyButtons}
-          </ButtonGroup>
-        )}
         <div className='sidebar-button-group'>
-          <Typography className='sidebar-button-group-title'>Отчёты</Typography>
+          <Grid sx={{
+            height: "25px",
+            pb: 1,
+          }}>
+            <Typography className={`sidebar-button-group-title opacity-${visible} display-${shouldRender}`}>Отчёты</Typography>
+          </Grid>
           <div className='sidebar-button-group-list'>
             <Button
               className={`sidebar-nav-btn ${pathname === '/cards' ? 'nav-button-active' : 'nav-button-inactive'}`}
               variant='text'
               size='large'
-              href='/cards'
+              onClick={()=>navigate('/cards')}
             >
               <ContactPhoneIcon />
-              Звонки
+              <span className={`opacity-${visible} display-${shouldRender}`}>
+                Звонки
+              </span>
             </Button>
             <Button
               className={`sidebar-nav-btn ${pathname === '/stats_by_employees' ? 'nav-button-active' : 'nav-button-inactive'}`}
               variant='text'
               size='large'
-              href='/stats_by_employees'
+              onClick={()=>navigate('/stats_by_employees')}
             >
               <GroupIcon />
-              Звонки по сотрудникам
+              <span className={`opacity-${visible} display-${shouldRender}`}>
+                Звонки по сотрудникам
+              </span>
             </Button>
             <Button
               className={`sidebar-nav-btn ${pathname === '/stats_by_reasons' ? 'nav-button-active' : 'nav-button-inactive'}`}
               variant='text'
               size='large'
-              href='/stats_by_reasons'
+              onClick={()=>navigate('/stats_by_reasons')}
             >
               <HelpIcon />
-              Звонки по причинам
+              <span className={`opacity-${visible} display-${shouldRender}`}>
+                Звонки по причинам
+              </span>
             </Button>
             <Button
               className={`sidebar-nav-btn ${pathname === '/stats_by_solutions' ? 'nav-button-active' : 'nav-button-inactive'}`}
               variant='text'
               size='large'
-              href='/stats_by_solutions'
+              onClick={()=>navigate('/stats_by_solutions')}
             >
               <EmojiObjectsIcon />
-              Звонки по решениям
+
+              <span className={`opacity-${visible} display-${shouldRender}`}>
+                Звонки по решениям
+              </span>
             </Button>
             <Button
               className={`sidebar-nav-btn ${pathname === '/stats_by_repeated_calls' ? 'nav-button-active' : 'nav-button-inactive'}`}
               variant='text'
               size='large'
-              href='/stats_by_repeated_calls'
+              onClick={()=>navigate('/stats_by_repeated_calls')}
             >
               <RepeatIcon />
-              Повторные звонки
+              <span className={`opacity-${visible} display-${shouldRender}`}>
+                Повторные звонки
+              </span>
             </Button>
             <Button
               className={`sidebar-nav-btn ${pathname === '/stats_by_inactives_users' ? 'nav-button-active' : 'nav-button-inactive'}`}
@@ -112,13 +133,30 @@ const Sidebar = () => {
               onClick={() => navigate('/stats_by_inactives_users')}
             >
               <VoiceOverOffIcon />
-              Неактивные звонки
+              <span className={`opacity-${visible} display-${shouldRender}`}>
+                Неактивные звонки
+              </span>
+
             </Button>
           </div>
         </div>
         <Divider />
+        {user.role === 'senior_spec' && (
+          <div className={`display-${shouldRender}`}>
+            <ButtonGroup
+              className={`duty-button-group opacity-${visible}`}
+              sx={{
+                width: '100%',
+              }}
+              size='small'
+              aria-label='Small button group'
+            >
+              {dutyButtons}
+            </ButtonGroup>
+          </div>
+        )}
         {user.role === 'admin' && (
-          <div className='sidebar-button-group'>
+          <div className={`sidebar-button-group opacity-${visible} display-${shouldRender}`}>
             <Typography className='sidebar-button-group-title'>
               Управление
             </Typography>
@@ -127,7 +165,7 @@ const Sidebar = () => {
                 className={`sidebar-nav-btn ${pathname === '/solution-and-reason' ? 'nav-button-active' : 'nav-button-inactive'}`}
                 variant='text'
                 size='large'
-                href='/actions_tree'
+                onClick={()=>navigate('/actions_tree')}
               >
                 Причины / Решения
               </Button>
@@ -135,7 +173,7 @@ const Sidebar = () => {
                 className={`sidebar-nav-btn ${pathname === '/employees' ? 'nav-button-active' : 'nav-button-inactive'}`}
                 variant='text'
                 size='large'
-                href='/employees'
+                onClick={()=>navigate('/employees')}
               >
                 Сотрудники
               </Button>
@@ -147,11 +185,13 @@ const Sidebar = () => {
           variant='text'
           color='error'
           size='large'
-          sx={{ mt: 'auto' }}
+          sx={{ mt: 'auto'}}
           onClick={()=>setOpenModal(true)}
         >
           <LogoutIcon />
-          Выйти из системы
+          <span className={`opacity-${visible} display-${shouldRender}`}>
+            Выйти из системы
+          </span>
         </Button>
         <Modal open={openModal} handleClose={handleClose}>
           <Grid sx={{

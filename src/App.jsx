@@ -1,4 +1,4 @@
-import {Navigate, Route, Routes} from 'react-router-dom';
+import {Navigate, Route, Routes, useLocation} from 'react-router-dom';
 import { useAppSelector } from './app/hooks.js';
 import SignIn from './Containers/SignIn/SignIn.jsx';
 import Notifications from './Components/Notifications/Notifications.jsx';
@@ -13,9 +13,15 @@ import CardsReportBySolution from "./Containers/CardsReportBySolution/CardsRepor
 import CardsReportByRepeatedCalls from "./Containers/CardsReportByRepeatedCalls/CardsReportByRepeatedCalls.jsx";
 import CardsReportByInactiveUsers from "./Containers/CardsReportByInactiveUsers/CardsReportByInactiveUsers.jsx";
 import ReasonsAndSolutions from "./Containers/ReasonsAndSolutions/ReasonsAndSolutions.jsx";
+import {useEffect, useState} from "react";
 
 const App = () => {
   const { user } = useAppSelector(state => state.user);
+  const location = useLocation();
+  const [visible, setVisible] = useState(false);
+  useEffect(() => {
+    setVisible(false);
+  }, [location.pathname]);
 
   const publicPages = () => (
     <>
@@ -45,16 +51,18 @@ const App = () => {
   return (
     <>
       <Notifications />
-      <div className='content-wrapper'>
-        {user && <Sidebar />}
-        {user && <ContentHeader />}
-        <Routes>
-          <Route
-            path='*'
-            element={<Navigate to={user ? '/cards' : '/sign-in'} />}
-          />
-          {user ? privatePages() : publicPages()}
-        </Routes>
+      <div className={`content-wrapper`}>
+        {user && <Sidebar visible={visible} setVisible={setVisible} />}
+        <div className={`blur-${visible}`}>
+          {user && <ContentHeader />}
+          <Routes>
+            <Route
+              path='*'
+              element={<Navigate to={user ? '/cards' : '/sign-in'} />}
+            />
+            {user ? privatePages() : publicPages()}
+          </Routes>
+        </div>
       </div>
     </>
   );

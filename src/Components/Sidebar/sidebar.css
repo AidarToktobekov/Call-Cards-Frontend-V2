@@ -1,5 +1,5 @@
 .sidebar {
-  position: sticky;
+  position: absolute;
   top: 0;
   left: 0;
   display: flex;
@@ -14,7 +14,6 @@
 
 .sidebar .user-name {
   font-size: 15px;
-  margin: 4px 0 8px;
 }
 
 .duty-button-group {
@@ -41,7 +40,6 @@
 }
 
 .sidebar-button-group-title {
-  margin-bottom: 6px!important;
   opacity: .9;
 }
 
@@ -54,6 +52,9 @@
   text-transform: unset;
   padding: 14px 18px;
   border-radius: 12px;
+}
+.sidebar-nav-btn{
+  min-height: 55px;
 }
 
 .nav-button-active {
@@ -72,3 +73,35 @@
 .nav-button-inactive:hover {
   background-color: var(--nav-btn-inactive-bg-hover) !important;
 }
+
+.open-true{
+  transition: 0.2s ease-in-out;
+  min-width: 300px;
+  max-width: 300px;
+}
+
+.open-false{
+  transition: 0.2s ease-in-out;
+  transition-delay: 0.2s;
+  min-width: 0;
+  max-width: 200px;
+}
+
+.opacity-true{
+  transition: opacity 0.2s;
+  opacity: 1;
+}
+
+.opacity-false{
+  transition: opacity 0.2s;
+  opacity: 0;
+}
+
+.display-true{
+  display: block;
+}
+
+.display-false{
+  display: none;
+}
+
