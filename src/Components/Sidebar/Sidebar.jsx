@@ -30,7 +30,7 @@ const Sidebar = ({visible, setVisible}) => {
     if(visible){
       setTimeout(() => setShouldRender(true), 200);
     } else {
-      setTimeout(() => setShouldRender(false), 200);
+      setTimeout(() => setShouldRender(false), 10);
     }
   }, [visible]);
 
