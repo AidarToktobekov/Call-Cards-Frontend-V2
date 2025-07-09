@@ -9,11 +9,11 @@ const CreateSolution = ({endFunction, handleClose}) => {
     reason_id: '',
   });
   const { solutionLoading, createSolutions } = useCreateSolution();
-  const { reasons, reasonsLoading, fetchFilterData } = useFetchFilterData();
+  const { reasons, reasonsLoading, fetchReasons } = useFetchFilterData();
 
   useEffect(() => {
-    void fetchFilterData();
-  }, [fetchFilterData]);
+    void fetchReasons();
+  }, [fetchReasons]);
 
   const inputChangeHandler = (e) => {
     const { name, value } = e.target;

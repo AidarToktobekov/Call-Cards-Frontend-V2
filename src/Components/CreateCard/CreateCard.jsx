@@ -17,7 +17,7 @@ import {useFetchFilterData} from "../../globalHooks.js";
 
 const CreateCard = ({client, handleClose}) => {
   const user = useAppSelector(state => state.user.user);
-  const {reasons, reasonsLoading, solutions, solutionsLoading, fetchFilterData} = useFetchFilterData();
+  const {reasons, reasonsLoading, solutions, solutionsLoading, fetchSolutions, fetchReasons} = useFetchFilterData();
   const {cardLoading, createCards } = useCreateCards();
   const { resetClient} = useFetchClient();
   const [modalClient, setModalClient] = useState(client);
@@ -49,8 +49,9 @@ const CreateCard = ({client, handleClose}) => {
 
 
   useEffect(() => {
-      void fetchFilterData();
-  }, [fetchFilterData]);
+    void fetchSolutions();
+    void fetchReasons();
+  }, [fetchSolutions, fetchReasons]);
 
   useEffect(() => {
     setModalClient(client)
@@ -378,13 +379,7 @@ const CreateCard = ({client, handleClose}) => {
               multiline
               onChange={inputChangeHandler}
               sx={{
-                // gridColumnStart: client?.ls_abon ? "2" : "1",
-                // gridColumnEnd: "3",
-                // gridRowStart: client?.ls_abon ? '6' : "3",
-                // gridRowEnd: '9',
-                // width: '100%',
                 gridArea: "comment",
-
               }}
               name={'comment'}
               value={modalClient?.comment || ''}
@@ -395,12 +390,7 @@ const CreateCard = ({client, handleClose}) => {
               loading={cardLoading}
               type={'submit'}
               sx={{
-                // width: '100%',
-                // mt: '15px',
-                // gridColumnStart: "1",
-                // gridColumnEnd: "3",
                 gridArea: "button",
-
               }}
           >
             Создать

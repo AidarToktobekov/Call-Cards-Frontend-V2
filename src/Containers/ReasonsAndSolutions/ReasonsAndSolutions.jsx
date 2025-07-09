@@ -14,7 +14,7 @@ const ReasonsAndSolutions = ()=>{
     reason: true,
   });
 
-  const {reasons, reasonsLoading, solutions, solutionsLoading, fetchFilterData} = useFetchFilterData();
+  const {reasons, reasonsLoading, solutions, solutionsLoading, fetchSolutions, fetchReasons} = useFetchFilterData();
   const [openModal, setOpenModal] = useState({ open: false });
 
   const handleCloseModal = () => {
@@ -25,8 +25,9 @@ const ReasonsAndSolutions = ()=>{
   const {solutionDeleteLoading, deleteSolutions } = useDeleteSolution();
 
   useEffect(()=>{
-    void fetchFilterData();
-  }, [fetchFilterData])
+    void fetchSolutions();
+    void fetchReasons();
+  }, [fetchSolutions, fetchReasons])
 
   return(
     <>

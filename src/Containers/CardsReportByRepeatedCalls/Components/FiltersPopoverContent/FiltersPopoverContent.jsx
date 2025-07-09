@@ -18,15 +18,17 @@ const PopoverContent = ({
     reasons,
     reasonsLoading,
     solutionsLoading,
-    fetchFilterData,
     filteredSolutions,
     filteredSolutionsLoading,
-    handleFilterSolution
+    handleFilterSolution,
+    fetchSolutions,
+    fetchReasons,
   } = useFetchFilterData();
 
   useEffect(() => {
-    void fetchFilterData();
-  }, [fetchFilterData]);
+    void fetchReasons();
+    void fetchSolutions();
+  }, [fetchSolutions, fetchReasons]);
 
   return (
     <Popover

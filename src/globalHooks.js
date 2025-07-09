@@ -54,6 +54,45 @@ export const useFetchFilterData = () => {
     }
   }, [dispatch]);
 
+  const fetchReasons = useCallback(async () => {
+    try {
+      setReasonsLoading(true);
+
+      const reasonsResponse = await axiosApi('/actions_tree/reasons');
+      setReasonsLoading(false);
+      setReasons(reasonsResponse.data);
+    } catch (e) {
+      dispatch(addSnackbar({ type: 'error', message: e.data?.response?.error || e.data?.response?.message || e?.error || e?.message }));
+      setReasonsLoading(false);
+    }
+  }, [dispatch]);
+
+  const fetchSolutions = useCallback(async () => {
+    try {
+      setSolutionsLoading(true);
+
+      const solutionsResponse = await axiosApi('/actions_tree/solutions');
+      setSolutionsLoading(false);
+      setSolutions(solutionsResponse.data);
+    } catch (e) {
+      dispatch(addSnackbar({ type: 'error', message: e.data?.response?.error || e.data?.response?.message || e?.error || e?.message }));
+      setSolutionsLoading(false);
+    }
+  }, [dispatch]);
+
+  const fetchUsers = useCallback(async () => {
+    try {
+      setUsersLoading(true);
+      const response = await axiosApi('/users');
+      setUsers(response.data);
+    } catch (e) {
+      dispatch(addSnackbar({ type: 'error', message: e.error || e.message }));
+    } finally {
+      setUsersLoading(false);
+    }
+  }, [dispatch]);
+
+
   return {
     reasons,
     solutions,
@@ -64,6 +103,9 @@ export const useFetchFilterData = () => {
     fetchFilterData,
     handleFilterSolution,
     filteredSolutions,
-    filteredSolutionsLoading
+    filteredSolutionsLoading,
+    fetchReasons,
+    fetchSolutions,
+    fetchUsers
   };
 };
