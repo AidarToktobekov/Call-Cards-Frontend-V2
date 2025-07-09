@@ -311,7 +311,7 @@ const CreateCard = ({client, handleClose}) => {
                     title: '',
                   }
               }
-              options={client?.ls_abon ? reasons : reasons.filter(item=>['Callback', 'Желает подключиться', 'Интерком'].includes(item?.title))}
+              options={client?.ls_abon ? reasons : reasons.filter(item=>['Callback', 'Желает подключиться', 'Интерком', 'Фастнет'].includes(item?.title))}
               loading={reasonsLoading}
               renderInput={(params) => (
                   <TextField
