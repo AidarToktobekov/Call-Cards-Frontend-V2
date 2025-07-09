@@ -15,7 +15,7 @@
 
 .list-search .filters-button,
 .list-search button[type=submit],
-.list-search .create-employee-button {
+.create-employee-button {
   display: flex;
   gap: 8px;
   padding: 6px 8px;
