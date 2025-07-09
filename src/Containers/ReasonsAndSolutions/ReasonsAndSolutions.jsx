@@ -1,11 +1,11 @@
 import {Button, CircularProgress, Divider, Grid, Paper, Typography} from "@mui/material";
 import React, {useEffect, useState} from "react";
-import {useDeleteReasons, useFetchReasons} from "../../hooks/reasonsHook.js";
-import {useDeleteSolution, useFetchSolutions} from "../../hooks/solutionsHook.js";
 import AddIcon from '@mui/icons-material/Add';
 import Modal from "../../Components/Modal/Modal.jsx";
 import CreateReason from "../../Components/CreateReason/CreateReason.jsx";
 import CreateSolution from "../../Components/CreateSolution/CreateSolution.jsx";
+import {useFetchFilterData} from "../../globalHooks.js";
+import {useDeleteReasons, useDeleteSolution} from "./hooks.js";
 
 const ReasonsAndSolutions = ()=>{
 
@@ -14,9 +14,7 @@ const ReasonsAndSolutions = ()=>{
     reason: true,
   });
 
-  const {reasons, fetchReasons, reasonsLoading} = useFetchReasons();
-  const {solutions, fetchSolutions, solutionsLoading} = useFetchSolutions();
-
+  const {reasons, reasonsLoading, solutions, solutionsLoading, fetchSolutions, fetchReasons} = useFetchFilterData();
   const [openModal, setOpenModal] = useState({ open: false });
 
   const handleCloseModal = () => {
@@ -27,9 +25,9 @@ const ReasonsAndSolutions = ()=>{
   const {solutionDeleteLoading, deleteSolutions } = useDeleteSolution();
 
   useEffect(()=>{
-    void fetchReasons();
     void fetchSolutions();
-  }, [fetchReasons, fetchSolutions])
+    void fetchReasons();
+  }, [fetchSolutions, fetchReasons])
 
   return(
     <>
@@ -167,11 +165,6 @@ const ReasonsAndSolutions = ()=>{
                       <td>
                        <Button
                          loading={reasonsDeleteLoading}
-                         // onClick={async()=>{
-                         //  await deleteReason(reason.id);
-                         //  await fetchReasons();
-                         //  await fetchSolutions();
-                         //  }}
                          onClick={()=>{
                            setOpenModal({
                              open: true,
@@ -281,10 +274,10 @@ const ReasonsAndSolutions = ()=>{
         </Paper>
         <Modal open={openModal.open} handleClose={handleCloseModal}>
           {openModal.type === 'addReason' && (
-            <CreateReason endFunction={fetchReasons} handleClose={handleCloseModal}/>
+            <CreateReason handleClose={handleCloseModal}/>
           )}
           {openModal.type === 'addSolution' && (
-            <CreateSolution endFunction={fetchSolutions} handleClose={handleCloseModal}/>
+            <CreateSolution handleClose={handleCloseModal}/>
           )}
           {openModal.type === 'deleteReason' && (
             <Grid sx={{
@@ -300,8 +293,7 @@ const ReasonsAndSolutions = ()=>{
                 <Button variant={'outlined'} color={"error"}
                         onClick={async()=>{
                           await deleteReason(openModal.id);
-                          await fetchReasons();
-                          await fetchSolutions();
+                          await fetchFilterData();
                           handleCloseModal();
                         }}
                         sx={{
@@ -333,7 +325,7 @@ const ReasonsAndSolutions = ()=>{
                 <Button variant={'outlined'} color={"error"}
                         onClick={async()=>{
                           await deleteSolutions(openModal.id);
-                          await fetchSolutions();
+                          handleCloseModal();
                           handleCloseModal();
                         }}
                         sx={{

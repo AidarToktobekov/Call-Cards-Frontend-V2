@@ -1,7 +1,7 @@
+import {addSnackbar} from "../../features/notifications/notificationsSlice.js";
 import {useState} from "react";
-import axiosApi from "../axiosApi.js";
-import {useAppDispatch} from "../app/hooks.js";
-import {addSnackbar} from "../features/notifications/notificationsSlice.js";
+import {useAppDispatch} from "../../app/hooks.js";
+import axiosApi from "../../axiosApi.js";
 
 export const useCreateCards = () => {
   const [cardLoading, setCardLoading] = useState(false);

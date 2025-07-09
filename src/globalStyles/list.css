@@ -15,7 +15,7 @@
 
 .list-search .filters-button,
 .list-search button[type=submit],
-.list-search .create-employee-button {
+.create-employee-button {
   display: flex;
   gap: 8px;
   padding: 6px 8px;
@@ -87,7 +87,6 @@
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  max-width: calc(100vw - 344px); /* avoid horizontal window scroll, by fitting wrapper inside it */
   height: calc(100vh - 160px); /* avoid vertical window scroll, by fitting wrapper inside it */
   overflow: auto;
   margin-top: 10px;

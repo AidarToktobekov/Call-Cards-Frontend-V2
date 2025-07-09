@@ -1,5 +1,5 @@
 import {useState} from "react";
-import axiosApi from "../axiosApi.js";
+import axiosApi from "../../axiosApi.js";
 
 export const useFetchClient = () => {
   const [client, setClient] = useState([]);

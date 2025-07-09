@@ -10,17 +10,15 @@ import {
 } from '@mui/material';
 import {memo, useEffect, useState} from 'react';
 import {useAppDispatch, useAppSelector} from '../../app/hooks.js';
-import {useFetchReasons} from "../../hooks/reasonsHook.js";
-import {useFetchSolutions} from "../../hooks/solutionsHook.js";
-import {useCreateCards} from "../../hooks/cardsHook.js";
-import {useFetchClient} from "../../hooks/clientsHook.js";
 import {addSnackbar} from "../../features/notifications/notificationsSlice.js";
+import {useFetchClient} from "../ContentHeader/hooks.js";
+import {useCreateCards} from "./hooks.js";
+import {useFetchFilterData} from "../../globalHooks.js";
 
 const CreateCard = ({client, handleClose}) => {
   const user = useAppSelector(state => state.user.user);
-  const {reasons, reasonsLoading, fetchReasons} = useFetchReasons();
-  const {solutions, solutionsLoading, fetchSolutions} = useFetchSolutions();
-  const {  cardLoading, createCards } = useCreateCards();
+  const {reasons, reasonsLoading, solutions, solutionsLoading, fetchSolutions, fetchReasons} = useFetchFilterData();
+  const {cardLoading, createCards } = useCreateCards();
   const { resetClient} = useFetchClient();
   const [modalClient, setModalClient] = useState(client);
   const dispatch = useAppDispatch();
@@ -51,9 +49,9 @@ const CreateCard = ({client, handleClose}) => {
 
 
   useEffect(() => {
-      void fetchReasons();
-      void fetchSolutions();
-  }, [fetchReasons, fetchSolutions]);
+    void fetchSolutions();
+    void fetchReasons();
+  }, [fetchSolutions, fetchReasons]);
 
   useEffect(() => {
     setModalClient(client)
@@ -313,7 +311,7 @@ const CreateCard = ({client, handleClose}) => {
                     title: '',
                   }
               }
-              options={client?.ls_abon ? reasons : reasons.filter(item=>['Callback', 'Желает подключиться', 'Интерком'].includes(item?.title))}
+              options={client?.ls_abon ? reasons : reasons.filter(item=>['Callback', 'Желает подключиться', 'Интерком', 'Фастнет'].includes(item?.title))}
               loading={reasonsLoading}
               renderInput={(params) => (
                   <TextField
@@ -381,13 +379,7 @@ const CreateCard = ({client, handleClose}) => {
               multiline
               onChange={inputChangeHandler}
               sx={{
-                // gridColumnStart: client?.ls_abon ? "2" : "1",
-                // gridColumnEnd: "3",
-                // gridRowStart: client?.ls_abon ? '6' : "3",
-                // gridRowEnd: '9',
-                // width: '100%',
                 gridArea: "comment",
-
               }}
               name={'comment'}
               value={modalClient?.comment || ''}
@@ -398,12 +390,7 @@ const CreateCard = ({client, handleClose}) => {
               loading={cardLoading}
               type={'submit'}
               sx={{
-                // width: '100%',
-                // mt: '15px',
-                // gridColumnStart: "1",
-                // gridColumnEnd: "3",
                 gridArea: "button",
-
               }}
           >
             Создать

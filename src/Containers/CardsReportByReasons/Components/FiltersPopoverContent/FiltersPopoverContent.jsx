@@ -4,7 +4,7 @@ import {DemoContainer} from '@mui/x-date-pickers/internals/demo';
 import {AdapterDayjs} from '@mui/x-date-pickers/AdapterDayjs';
 import {LocalizationProvider} from '@mui/x-date-pickers/LocalizationProvider';
 import {DatePicker} from '@mui/x-date-pickers/DatePicker';
-import {useFetchFilterData} from "../../../Cards/hooks.js";
+import {useFetchFilterData} from "../../../../globalHooks.js";
 
 const PopoverContent = ({
                           open,
@@ -17,12 +17,12 @@ const PopoverContent = ({
   const {
     reasons,
     reasonsLoading,
-    fetchFilterData,
+    fetchReasons,
   } = useFetchFilterData();
 
   useEffect(() => {
-    void fetchFilterData();
-  }, [fetchFilterData]);
+    void fetchReasons();
+  }, [fetchReasons]);
 
   return (
     <Popover
