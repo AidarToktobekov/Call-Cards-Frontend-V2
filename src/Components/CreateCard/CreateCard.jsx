@@ -10,16 +10,14 @@ import {
 } from '@mui/material';
 import {memo, useEffect, useState} from 'react';
 import {useAppDispatch, useAppSelector} from '../../app/hooks.js';
-import {useFetchReasons} from "../../hooks/reasonsHook.js";
-import {useFetchSolutions} from "../../hooks/solutionsHook.js";
 import {addSnackbar} from "../../features/notifications/notificationsSlice.js";
 import {useFetchClient} from "../ContentHeader/hooks.js";
 import {useCreateCards} from "./hooks.js";
+import {useFetchFilterData} from "../../globalHooks.js";
 
 const CreateCard = ({client, handleClose}) => {
   const user = useAppSelector(state => state.user.user);
-  const {reasons, reasonsLoading, fetchReasons} = useFetchReasons();
-  const {solutions, solutionsLoading, fetchSolutions} = useFetchSolutions();
+  const {reasons, reasonsLoading, solutions, solutionsLoading, fetchFilterData} = useFetchFilterData();
   const {cardLoading, createCards } = useCreateCards();
   const { resetClient} = useFetchClient();
   const [modalClient, setModalClient] = useState(client);
@@ -51,9 +49,8 @@ const CreateCard = ({client, handleClose}) => {
 
 
   useEffect(() => {
-      void fetchReasons();
-      void fetchSolutions();
-  }, [fetchReasons, fetchSolutions]);
+      void fetchFilterData();
+  }, [fetchFilterData]);
 
   useEffect(() => {
     setModalClient(client)

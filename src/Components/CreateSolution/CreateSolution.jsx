@@ -1,7 +1,7 @@
 import {Button, CircularProgress, Grid, MenuItem, TextField, Typography} from "@mui/material";
 import {useEffect, useState} from "react";
-import {useCreateSolution} from "../../hooks/solutionsHook.js";
-import {useFetchReasons} from "../../hooks/reasonsHook.js";
+import {useFetchFilterData} from "../../globalHooks.js";
+import {useCreateSolution} from "./hooks.js";
 
 const CreateSolution = ({endFunction, handleClose}) => {
   const [state, setState] = useState({
@@ -9,11 +9,11 @@ const CreateSolution = ({endFunction, handleClose}) => {
     reason_id: '',
   });
   const { solutionLoading, createSolutions } = useCreateSolution();
-  const { reasons, reasonsLoading, fetchReasons } = useFetchReasons();
+  const { reasons, reasonsLoading, fetchFilterData } = useFetchFilterData();
 
   useEffect(() => {
-    void fetchReasons();
-  }, [fetchReasons]);
+    void fetchFilterData();
+  }, [fetchFilterData]);
 
   const inputChangeHandler = (e) => {
     const { name, value } = e.target;

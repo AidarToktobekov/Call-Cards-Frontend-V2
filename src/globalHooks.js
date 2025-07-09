@@ -47,7 +47,7 @@ export const useFetchFilterData = () => {
       setUsersLoading(false);
       setUsers(employeesResponse.data);
     } catch (e) {
-      dispatch(addSnackbar({ type: 'error', message: e.error || e.message }));
+      dispatch(addSnackbar({ type: 'error', message: e.data?.response?.error || e.data?.response?.message || e?.error || e?.message }));
       setReasonsLoading(false);
       setSolutionsLoading(false);
       setUsersLoading(false);

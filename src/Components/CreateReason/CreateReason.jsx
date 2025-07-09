@@ -1,6 +1,6 @@
 import {Button, Grid, TextField, Typography} from "@mui/material";
 import {useState} from "react";
-import {useCreateReasons} from "../../hooks/reasonsHook.js";
+import {useCreateReasons} from "./hooks.js";
 
 const CreateReason = ({handleClose, endFunction}) => {
   const [reasonTitle, setReasonTitle] = useState('');
