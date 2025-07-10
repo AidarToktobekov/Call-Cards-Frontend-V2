@@ -10,9 +10,11 @@ import {useDeleteReasons, useDeleteSolution} from "./hooks.js";
 const ReasonsAndSolutions = ()=>{
 
   const [state, setState] = useState({
-    solution: true,
+    solution: false,
     reason: true,
   });
+  const [reasonId, setReasonId] = useState('');
+  const [filteredSolution, setFilteredSolution] = useState([]);
 
   const {reasons, reasonsLoading, solutions, solutionsLoading, fetchSolutions, fetchReasons} = useFetchFilterData();
   const [openModal, setOpenModal] = useState({ open: false });
@@ -23,6 +25,22 @@ const ReasonsAndSolutions = ()=>{
 
   const {reasonsDeleteLoading, deleteReason } = useDeleteReasons();
   const {solutionDeleteLoading, deleteSolutions } = useDeleteSolution();
+
+  useEffect(()=>{
+    if (reasonId) {
+      setState(prevState => ({
+        ...prevState,
+        solution: true,
+      }));
+      setFilteredSolution(solutions.filter(solution => solution.reason.id === reasonId));
+    }else {
+      setFilteredSolution(solutions);
+      setState(prevState => ({
+        ...prevState,
+        solution: false,
+      }));
+    }
+  }, [reasonId, solutions]);
 
   useEffect(()=>{
     void fetchSolutions();
@@ -159,7 +177,16 @@ const ReasonsAndSolutions = ()=>{
                 )}
                 {(reasons || []).map(reason => (
                   <React.Fragment key={reason.id}>
-                    <tr>
+                    <tr className={"table-item"} style={{
+                      background: reasonId === reason.id ? '#3c3c3c' : 'transparent',
+                      cursor: 'pointer',
+                    }} onClick={()=> {
+                      if (reasonId === reason.id) {
+                        setReasonId('');
+                      }else {
+                        setReasonId(reason.id);
+                      }
+                    }}>
                       <td>{reason.id}</td>
                       <td >{reason.title}</td>
                       <td>
@@ -236,7 +263,7 @@ const ReasonsAndSolutions = ()=>{
                   </tr>
                 </>
               )}
-              {(solutions || []).map(solution=> (
+              {(filteredSolution || []).map(solution=> (
                 <React.Fragment key={solution.id}>
                   <tr>
                     <td>{solution.id}</td>
@@ -293,7 +320,7 @@ const ReasonsAndSolutions = ()=>{
                 <Button variant={'outlined'} color={"error"}
                         onClick={async()=>{
                           await deleteReason(openModal.id);
-                          await fetchFilterData();
+                          await fetchReasons();
                           handleCloseModal();
                         }}
                         sx={{
@@ -325,7 +352,7 @@ const ReasonsAndSolutions = ()=>{
                 <Button variant={'outlined'} color={"error"}
                         onClick={async()=>{
                           await deleteSolutions(openModal.id);
-                          handleCloseModal();
+                          await fetchSolutions();
                           handleCloseModal();
                         }}
                         sx={{
